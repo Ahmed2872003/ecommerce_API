@@ -1,9 +1,22 @@
-const product = require("../sql/product.js");
+const Product = require("../model/product.js");
+const { Sequelize, Op } = require("sequelize");
+const Category = require("../model/category.js");
+const sequelize = require("../DB/connect.js");
+const userToSeqFilter = require("../utility/filter.js");
 
 const getAllProducts = async (req, res, next) => {
-  let { query: filters } = req;
-
-  const products = await product.find(filters);
+  const products = await Product.findAll({
+    raw: true,
+    attributes: {
+      exclude: ["description", "brand", "quantity", "CategoryId"],
+      include: [[Sequelize.col("Category.name"), "category"]],
+    },
+    include: {
+      model: Category,
+      attributes: [],
+      required: true,
+    },
+  });
 
   res.status(200).json({ data: products, length: products.length });
 };
@@ -11,12 +24,22 @@ const getAllProducts = async (req, res, next) => {
 const getProduct = async (req, res, next) => {
   const { id } = req.params;
 
-  const result = await product.findById(id);
+  const result = await Product.findOne({
+    raw: true,
+    attributes: {
+      exclude: ["CategoryId"],
+      include: [[sequelize.col("Category.name"), "category"]],
+    },
+    where: {
+      id: { [Op.eq]: id },
+    },
+    include: {
+      model: Category,
+      attributes: [],
+      required: true,
+    },
+  });
 
-  if (!result.length) {
-    res.status(200).json({ msg: `No Product is found with id: ${id}` });
-    return;
-  }
   res.status(200).json({ data: result });
 };
 

@@ -9,7 +9,7 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 // db connection
-const { db } = require("./DB/connect");
+const sequelize = require("./DB/connect");
 
 app.set("trust proxy", 1);
 // Security packages
@@ -45,8 +45,9 @@ app.use(errorHandler);
 
 (async () => {
   try {
-    await db.connect();
-    app.listen(port, () => console.log(`API is litening on port ${port}`));
+    await sequelize.authenticate();
+    app.listen(port, () => console.log(`API is listening on port ${port}`));
+    // require("./addProducts.js");
   } catch (err) {
     console.log(err.message);
   }

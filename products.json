@@ -6,7 +6,7 @@
     "price": 999,
     "quantity": 100,
     "image_url": "https://example.com/iphone12.jpg",
-    "category": 1,
+    "CategoryId": 1,
     "brand": "iPhone",
     "currency": "USD"
   },
@@ -17,7 +17,7 @@
     "price": 899,
     "quantity": 50,
     "image_url": "https://example.com/galaxys21.jpg",
-    "category": 1,
+    "CategoryId": 1,
     "brand": "Samsung",
     "currency": "USD"
   },
@@ -28,7 +28,7 @@
     "price": 499,
     "quantity": 20,
     "image_url": "https://example.com/ps5.jpg",
-    "category": 1,
+    "CategoryId": 1,
     "brand": "Sony",
     "currency": "USD"
   },
@@ -39,7 +39,7 @@
     "price": 499,
     "quantity": 15,
     "image_url": "https://example.com/xboxseriesx.jpg",
-    "category": 1,
+    "CategoryId": 1,
     "brand": "Microsoft",
     "currency": "USD"
   },
@@ -50,7 +50,7 @@
     "price": 1499,
     "quantity": 30,
     "image_url": "https://example.com/macbookpro.jpg",
-    "category": 2,
+    "CategoryId": 2,
     "brand": "Apple",
     "currency": "USD"
   },
@@ -61,7 +61,7 @@
     "price": 1199,
     "quantity": 25,
     "image_url": "https://example.com/xps13.jpg",
-    "category": 2,
+    "CategoryId": 2,
     "brand": "Dell",
     "currency": "USD"
   },
@@ -72,7 +72,7 @@
     "price": 1499,
     "quantity": 10,
     "image_url": "https://example.com/qledtv.jpg",
-    "category": 1,
+    "CategoryId": 1,
     "brand": "Samsung",
     "currency": "USD"
   },
@@ -83,7 +83,7 @@
     "price": 1999,
     "quantity": 5,
     "image_url": "https://example.com/oledtv.jpg",
-    "category": 1,
+    "CategoryId": 1,
     "brand": "LG",
     "currency": "USD"
   },
@@ -94,7 +94,7 @@
     "price": 299,
     "quantity": 40,
     "image_url": "https://example.com/qc35.jpg",
-    "category": 1,
+    "CategoryId": 1,
     "brand": "Bose",
     "currency": "USD"
   },
@@ -105,7 +105,7 @@
     "price": 349,
     "quantity": 30,
     "image_url": "https://example.com/wh1000xm4.jpg",
-    "category": 1,
+    "CategoryId": 1,
     "brand": "Sony",
     "currency": "USD"
   },
@@ -116,7 +116,7 @@
     "price": 149,
     "quantity": 50,
     "image_url": "https://example.com/charge4.jpg",
-    "category": 3,
+    "CategoryId": 3,
     "brand": "Fitbit",
     "currency": "USD"
   },
@@ -127,7 +127,7 @@
     "price": 599,
     "quantity": 15,
     "image_url": "https://example.com/forerunner945.jpg",
-    "category": 3,
+    "CategoryId": 3,
     "brand": "Garmin",
     "currency": "USD"
   },
@@ -138,7 +138,7 @@
     "price": 3899,
     "quantity": 5,
     "image_url": "https://example.com/eosr5.jpg",
-    "category": 4,
+    "CategoryId": 4,
     "brand": "Canon",
     "currency": "USD"
   },
@@ -149,7 +149,7 @@
     "price": 3499,
     "quantity": 10,
     "image_url": "https://example.com/a7riv.jpg",
-    "category": 4,
+    "CategoryId": 4,
     "brand": "Sony",
     "currency": "USD"
   },
@@ -160,7 +160,7 @@
     "price": 3299,
     "quantity": 8,
     "image_url": "https://example.com/d850.jpg",
-    "category": 4,
+    "CategoryId": 4,
     "brand": "Nikon",
     "currency": "USD"
   },
@@ -171,7 +171,7 @@
     "price": 129,
     "quantity": 20,
     "image_url": "https://example.com/nesthub.jpg",
-    "category": 1,
+    "CategoryId": 1,
     "brand": "Google",
     "currency": "USD"
   },
@@ -182,7 +182,7 @@
     "price": 249,
     "quantity": 15,
     "image_url": "https://example.com/echoshow10.jpg",
-    "category": 1,
+    "CategoryId": 1,
     "brand": "Amazon",
     "currency": "USD"
   },
@@ -193,7 +193,7 @@
     "price": 999,
     "quantity": 5,
     "image_url": "https://example.com/roombai7+.jpg",
-    "category": 5,
+    "CategoryId": 5,
     "brand": "iRobot",
     "currency": "USD"
   },
@@ -204,7 +204,7 @@
     "price": 499,
     "quantity": 10,
     "image_url": "https://example.com/cyclonev10.jpg",
-    "category": 5,
+    "CategoryId": 5,
     "brand": "Dyson",
     "currency": "USD"
   },
@@ -215,7 +215,7 @@
     "price": 99,
     "quantity": 30,
     "image_url": "https://example.com/instantpotduo.jpg",
-    "category": 5,
+    "CategoryId": 5,
     "brand": "Instant",
     "currency": "USD"
   }

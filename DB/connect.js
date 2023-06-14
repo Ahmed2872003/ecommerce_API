@@ -1,27 +1,8 @@
-const mysql = require("mysql");
-const util = require("util");
+const { Sequelize } = require("sequelize");
 
-class Db {
-  constructor(host, user, password, database) {
-    this.connection = mysql.createConnection({
-      host,
-      user,
-      password,
-      database,
-    });
-  }
+const sequelize = new Sequelize("ecommerce", "root", process.env.DB_PASS, {
+  host: "localhost",
+  dialect: "mysql",
+});
 
-  connect() {
-    return new Promise((res, rej) => {
-      this.connection.connect((err) => {
-        if (err) rej(err);
-        else res("Connected");
-      });
-    });
-  }
-}
-const db = new Db("localhost", "root", process.env.DB_PASS, "ecommerce");
-
-const query = util.promisify(db.connection.query).bind(db.connection);
-
-module.exports = { db, query };
+module.exports = sequelize;
