@@ -56,7 +56,7 @@ const getProduct = async (req, res, next) => {
   });
 
   if (!result) {
-    res.status(404).json({ msg: `no product with ID: ${id}` });
+    res.status(204).json({ msg: `no product with ID: ${id}` });
     return;
   }
 
