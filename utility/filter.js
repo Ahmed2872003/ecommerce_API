@@ -7,8 +7,7 @@ const userToSeqFilter = (filter) => {
 
   if (name) res.push({ name: { [Op.like]: `%${name}%` } });
 
-  if (category)
-    res.push(Sequelize.literal(`Category.name LIKE '%${category}%'`));
+  if (category) res.push({ "$Category.name$": { [Op.like]: `%${category}%` } });
 
   if (minPrice && maxPrice)
     res.push({ price: { [Op.between]: [minPrice, maxPrice] } });
