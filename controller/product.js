@@ -5,6 +5,12 @@ const sequelize = require("../DB/connect.js");
 const userToSeqFilter = require("../utility/filter.js");
 
 const getAllProducts = async (req, res, next) => {
+  // Converting user filter to sequelize filter
+  const filters = userToSeqFilter(req.query);
+
+  const { page = 1, limit } = req.query;
+  const offset = (+page - 1) * (+limit || 0);
+
   const products = await Product.findAll({
     raw: true,
     attributes: {
@@ -16,6 +22,15 @@ const getAllProducts = async (req, res, next) => {
       attributes: [],
       required: true,
     },
+    where: {
+      [Op.and]: filters,
+    },
+    order: [
+      ["rating", "DESC"],
+      ["id", "ASC"],
+    ],
+    limit: +limit || undefined,
+    offset,
   });
 
   res.status(200).json({ data: products, length: products.length });
@@ -39,6 +54,11 @@ const getProduct = async (req, res, next) => {
       required: true,
     },
   });
+
+  if (!result) {
+    res.status(404).json({ msg: `no product with ID: ${id}` });
+    return;
+  }
 
   res.status(200).json({ data: result });
 };
