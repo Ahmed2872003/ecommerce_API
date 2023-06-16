@@ -24,6 +24,7 @@ const notFound = require("./middleware/notFound.js");
 
 // routers
 const productRouter = require("./routes/product.js");
+const customerRouter = require("./routes/customer.js");
 
 app.use(
   rateLimiter({
@@ -39,6 +40,7 @@ app.use(cors({ origin: "http://localhost:5000" }));
 app.use(xss());
 
 app.use("/product", productRouter);
+app.use("/customer", customerRouter);
 
 app.use(notFound);
 app.use(errorHandler);
