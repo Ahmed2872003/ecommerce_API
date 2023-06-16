@@ -23,7 +23,9 @@ const errorHandler = (err, req, res, next) => {
     customError.statusCode = StatusCodes.BAD_REQUEST;
   }
 
-  res.status(customError.statusCode).json({ msg: customError.msg });
+  res
+    .status(customError.statusCode)
+    .json({ msg: customError.msg.split(",")[0] });
   // res.status(customError.statusCode).json(err);
 };
 
