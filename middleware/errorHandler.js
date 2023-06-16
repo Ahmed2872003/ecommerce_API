@@ -12,16 +12,19 @@ const errorHandler = (err, req, res, next) => {
     // len validation error
     const error = errors[0];
     if (error["validatorKey"] === "len") {
-      customError.msg = `Validation error: ${error["path"]} must be from ${error["validatorArgs"][0]} to ${error["validatorArgs"][1]} characters`;
+      customError.msg = `${error["type"]}: ${error["path"]} must be from ${error["validatorArgs"][0]} to ${error["validatorArgs"][1]} length`;
     }
     // notNull constraint error
-    else if (error["validatorKey"] === "is_null") {
-      customError.msg = `Validation error: ${error["path"]} field can't be empty`;
-    }
+    else if (error["validatorKey"] === "is_null")
+      customError.msg = `${error["type"]}: ${error["path"]} field can't be empty`;
+    else if (error["validatorKey"] === "not_unique")
+      customError.msg = `this ${error["path"]} already exists`;
+
     customError.statusCode = StatusCodes.BAD_REQUEST;
   }
 
-  res.status(customError.statusCode).json(customError.msg);
+  res.status(customError.statusCode).json({ msg: customError.msg });
+  // res.status(customError.statusCode).json(err);
 };
 
 module.exports = errorHandler;

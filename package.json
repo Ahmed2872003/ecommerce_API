@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/Ahmed2872003/ecommerce_API#readme",
   "dependencies": {
+    "bcrypt": "^5.1.0",
     "cors": "^2.8.5",
     "dotenv": "^16.1.4",
     "express": "^4.18.2",

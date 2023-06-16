@@ -1,8 +1,10 @@
-const { DataTypes } = require("sequelize");
+const { DataTypes, ValidationError } = require("sequelize");
 
 const sequelize = require("../DB/connect.js");
 
 const { StatusCodes } = require("http-status-codes");
+const { contentSecurityPolicy } = require("helmet");
+const bcrypt = require("bcrypt");
 
 const Customer = sequelize.define("Customer", {
   id: {
@@ -28,9 +30,25 @@ const Customer = sequelize.define("Customer", {
   email: {
     type: DataTypes.STRING,
     allowNull: false,
+    unique: true,
     validate: {
       isEmail: {
         msg: "Provide a valid email",
+      },
+    },
+  },
+  password: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    validate: {
+      len: [8, 32],
+      isValidFormat(pass) {
+        const regExp =
+          /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
+        if (pass.match(regExp) === null)
+          throw new Error(
+            "password must contain at least one: *Capital letter\n*Small letter\n*Number\n*Special character"
+          );
       },
     },
   },
@@ -82,5 +100,11 @@ const Customer = sequelize.define("Customer", {
 });
 
 Customer.sync();
+
+// hash password
+Customer.beforeCreate(async (customer, options) => {
+  const salt = await bcrypt.genSalt();
+  customer.password = await bcrypt.hash(customer.password, salt);
+});
 
 module.exports = Customer;
