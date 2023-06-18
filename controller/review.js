@@ -1,4 +1,4 @@
-const Review = require("../model/reviews.js");
+const Review = require("../model/review.js");
 const Product = require("../model/product.js");
 const { Sequelize, fn } = require("sequelize");
 
