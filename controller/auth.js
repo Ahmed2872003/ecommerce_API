@@ -25,7 +25,10 @@ const login = async (req, res, next) => {
   let customer = await Customer.findOne({ where: { email } });
 
   if (!customer)
-    throw new customAPIError("This email doesn't exist", StatusCodes.NOT_FOUND);
+    throw new customAPIError(
+      "This email doesn't exist",
+      StatusCodes.UNAUTHORIZED
+    );
 
   customer = customer.dataValues;
   console.log(customer);

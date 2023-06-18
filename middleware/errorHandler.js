@@ -11,16 +11,22 @@ const errorHandler = (err, req, res, next) => {
   if (errors) {
     // len validation error
     const error = errors[0];
-    if (error["validatorKey"] === "len") {
+    const validatorKey = error["validatorKey"];
+    if (validatorKey === "len") {
       customError.msg = `${error["type"]}: ${error["path"]} must be from ${error["validatorArgs"][0]} to ${error["validatorArgs"][1]} length`;
+      customError.statusCode = StatusCodes.BAD_REQUEST;
     }
     // notNull constraint error
-    else if (error["validatorKey"] === "is_null")
+    else if (validatorKey === "is_null") {
       customError.msg = `${error["type"]}: ${error["path"]} field can't be empty`;
-    else if (error["validatorKey"] === "not_unique")
+      customError.statusCode = StatusCodes.BAD_REQUEST;
+    } else if (validatorKey === "not_unique") {
       customError.msg = `this ${error["path"]} already exists`;
-
-    customError.statusCode = StatusCodes.BAD_REQUEST;
+      customError.statusCode = StatusCodes.CONFLICT;
+    } else if (validatorKey === "max" || validatorKey === "min") {
+      customError.msg = `${error["path"]} ${validatorKey} value is ${error["validatorArgs"][0]}`;
+      customError.statusCode = StatusCodes.BAD_REQUEST;
+    }
   }
 
   res
