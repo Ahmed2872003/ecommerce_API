@@ -26,6 +26,7 @@ const notFound = require("./middleware/notFound.js");
 const productRouter = require("./routes/product.js");
 const customerRouter = require("./routes/customer.js");
 const authRouter = require("./routes/auth.js");
+const reviewRouter = require("./routes/review.js");
 
 app.use(
   rateLimiter({
@@ -43,6 +44,7 @@ app.use(xss());
 app.use("/product", productRouter);
 app.use("/customer/auth", authRouter);
 app.use("/customer", customerRouter);
+app.use("/review", reviewRouter);
 
 app.use(notFound);
 app.use(errorHandler);
