@@ -28,6 +28,9 @@ const customerRouter = require("./routes/customer.js");
 const authRouter = require("./routes/auth.js");
 const reviewRouter = require("./routes/review.js");
 
+// authorization
+const auth = require("./middleware/authorization.js");
+
 app.use(
   rateLimiter({
     windowMs: 15 * 60 * 1000, // 15 minutes
@@ -43,6 +46,7 @@ app.use(xss());
 
 app.use("/product", productRouter);
 app.use("/customer/auth", authRouter);
+app.use("/", auth);
 app.use("/customer", customerRouter);
 app.use("/review", reviewRouter);
 

@@ -54,6 +54,6 @@ Customer.hasMany(Review);
 Review.belongsTo(Product);
 Review.belongsTo(Customer);
 
-Review.sync({ alter: true });
+Review.sync();
 
 module.exports = Review;

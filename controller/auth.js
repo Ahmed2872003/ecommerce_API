@@ -31,7 +31,6 @@ const login = async (req, res, next) => {
     );
 
   customer = customer.dataValues;
-  console.log(customer);
 
   if (await bcrypt.compare(password, customer.password)) {
     const token = Customer.createJWT(customer);

@@ -67,6 +67,9 @@ const Customer = sequelize.define(
     address: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        len: [5, 30],
+      },
     },
     city: {
       type: DataTypes.STRING,
@@ -103,17 +106,30 @@ const Customer = sequelize.define(
   { indexes: [{ unique: true, fields: ["email"] }] }
 );
 
-Customer.sync({ alter: true });
-
 // hash password
+Customer.hashPassIfChanged = async (customer) => {
+  if (customer.changed("password")) {
+    const salt = await bcrypt.genSalt();
+    const hashedPass = await bcrypt.hash(customer.get("password"), salt);
+    customer.set("password", hashedPass);
+  }
+};
+
 Customer.beforeCreate(async (customer, options) => {
-  const salt = await bcrypt.genSalt();
-  customer.password = await bcrypt.hash(customer.password, salt);
+  await Customer.hashPassIfChanged(customer);
+  options.validate = false;
+});
+
+Customer.beforeUpdate(async (customer, options) => {
+  await Customer.hashPassIfChanged(customer);
+  options.validate = false;
 });
 
 Customer.createJWT = (customer) =>
   jwt.sign({ id: customer.id }, process.env.JWT_SECRET_KEY, {
     expiresIn: "30d",
   });
+
+Customer.sync();
 
 module.exports = Customer;
