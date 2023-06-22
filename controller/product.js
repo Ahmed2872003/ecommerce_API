@@ -1,8 +1,11 @@
 const Product = require("../model/product.js");
 const { Sequelize, Op } = require("sequelize");
 const Category = require("../model/category.js");
+const Review = require("../model/review.js");
+
 const sequelize = require("../DB/connect.js");
 const userToSeqFilter = require("../utility/filter.js");
+const { StatusCodes } = require("http-status-codes");
 
 const getAllProducts = async (req, res, next) => {
   // Converting user filter to sequelize filter
@@ -56,7 +59,9 @@ const getProduct = async (req, res, next) => {
   });
 
   if (!result) {
-    res.status(204).json({ msg: `no product with ID: ${id}` });
+    res
+      .status(StatusCodes.NO_CONTENT)
+      .json({ msg: `no product with ID: ${id}` });
     return;
   }
 

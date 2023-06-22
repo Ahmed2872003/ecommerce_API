@@ -1,7 +1,14 @@
 const router = require("express").Router();
 
-const { createReview } = require("../controller/review.js");
+const {
+  createReview,
+  getReviews,
+  updateReview,
+  deleteReview,
+} = require("../controller/review.js");
 
-router.post("/", createReview);
+router.route("/").post(createReview).get(getReviews);
+
+router.route("/:reviewId").patch(updateReview).delete(deleteReview);
 
 module.exports = router;

@@ -17,7 +17,7 @@ const Review = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        len: [5, 30],
+        len: [3, 200],
       },
     },
     rating: {

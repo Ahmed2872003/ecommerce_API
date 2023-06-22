@@ -8,12 +8,9 @@ const calcWeightRate = async (rateTable) => {
     numerator += rating * weight;
     totalWeight += weight;
   }
-  comulativeRate = numerator / totalWeight;
+  comulativeRate = numerator / (totalWeight || 1);
 
-  comulativeRate = String(comulativeRate);
-
-  if (+comulativeRate[2] >= 5) return Math.floor(+comulativeRate) + 0.5;
-  else return +comulativeRate[0];
+  return comulativeRate.toFixed(1);
 };
 
 module.exports = calcWeightRate;

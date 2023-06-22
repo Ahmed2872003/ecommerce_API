@@ -11,7 +11,7 @@ const signup = async (req, res, next) => {
 
   const token = Customer.createJWT(customer);
 
-  res.status(StatusCodes.CREATED).json({ token });
+  res.status(StatusCodes.CREATED).json({ data: { token } });
 };
 
 const login = async (req, res, next) => {
@@ -35,7 +35,7 @@ const login = async (req, res, next) => {
   if (await bcrypt.compare(password, customer.password)) {
     const token = Customer.createJWT(customer);
 
-    res.status(StatusCodes.OK).json({ token });
+    res.status(StatusCodes.OK).json({ data: { token } });
   } else {
     res.status(StatusCodes.BAD_REQUEST).json({ msg: "Wrong password" });
   }
