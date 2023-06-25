@@ -60,7 +60,7 @@ const getProduct = async (req, res, next) => {
 
   if (!result) {
     res
-      .status(StatusCodes.NO_CONTENT)
+      .status(StatusCodes.NOT_FOUND)
       .json({ msg: `no product with ID: ${id}` });
     return;
   }

@@ -61,11 +61,7 @@ const getReviews = async (req, res, next) => {
     order: [["rating", "DESC"]],
   });
 
-  if (!reviews.length) {
-    res.sendStatus(StatusCodes.NO_CONTENT);
-  } else {
-    res.status(StatusCodes.OK).json({ data: reviews, length: reviews.length });
-  }
+  res.status(StatusCodes.OK).json({ data: reviews, length: reviews.length });
 };
 
 const updateReview = async (req, res, next) => {
@@ -73,10 +69,7 @@ const updateReview = async (req, res, next) => {
 
   const review = await Review.findByPk(id);
 
-  if (!review) {
-    res.sendStatus(StatusCodes.NO_CONTENT);
-    return;
-  }
+  if (!review) throw new CustomApiError(`No review found with that id: ${id}`);
 
   await review.update(req.body);
 
@@ -102,10 +95,7 @@ const deleteReview = async (req, res, next) => {
 
   const review = await Review.findByPk(id);
 
-  if (!review) {
-    res.sendStatus(StatusCodes.NO_CONTENT);
-    return;
-  }
+  if (!review) throw new CustomApiError(`No review found with that id: ${id}`);
 
   await review.destroy();
 
