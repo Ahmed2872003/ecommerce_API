@@ -6,6 +6,8 @@ const CustomAPIError = require("../errors/customError.js");
 
 const bcrypt = require("bcrypt");
 
+const { fn, col } = require("sequelize");
+
 const updateCustomer = async (req, res, next) => {
   const { password, newPass } = req.body;
 
@@ -31,4 +33,23 @@ const updateCustomer = async (req, res, next) => {
   res.sendStatus(StatusCodes.OK);
 };
 
-module.exports = { updateCustomer };
+const getCustomer = async (req, res, next) => {
+  const customer = await Customer.findByPk(req.customerId, {
+    attributes: {
+      exclude: ["password", "first_name", "last_name"],
+      include: [
+        [fn("concat", col("first_name"), " ", col("last_name")), "full_name"],
+      ],
+    },
+  });
+
+  if (!customer)
+    throw new CustomAPIError(
+      `No customer found with that id: ${req.customerId}`,
+      StatusCodes.NOT_FOUND
+    );
+
+  res.status(200).json({ data: customer });
+};
+
+module.exports = { updateCustomer, getCustomer };
