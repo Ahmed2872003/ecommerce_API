@@ -1,6 +1,9 @@
 const Product = require("../model/product.js");
+
 const { Sequelize, Op } = require("sequelize");
+
 const Category = require("../model/category.js");
+
 const Review = require("../model/review.js");
 
 const sequelize = require("../DB/connect.js");
@@ -30,6 +33,7 @@ const getAllProducts = async (req, res, next) => {
     },
     order: [
       ["rating", "DESC"],
+      ["createdAt", "DESC"],
       ["id", "ASC"],
     ],
     limit: +limit || undefined,
