@@ -5,7 +5,7 @@ const CartItem = require("../model/cart_items.js");
 const Product = require("../model/product.js");
 
 const NotFoundError = require("../errors/notFound.js");
-const CustomApiError = require("../errors/custom.js");
+const BadRequestError = require("../errors/badRequest.js");
 
 const { StatusCodes } = require("http-status-codes");
 
@@ -41,30 +41,30 @@ const addToCart = async (req, res, next) => {
 const updateCart = async (req, res, next) => {
   const { productId: ProductId, quantity } = req.body;
 
+  if (!ProductId || !quantity)
+    throw new BadRequestError("Must provide productId and quantity");
+
   const cart = await Cart.findOne({ where: { CustomerId: req.customerId } });
 
   const cartItem = await CartItem.findOne({
     where: { CartId: cart.getDataValue("id"), ProductId },
   });
 
-  if (!cartItem)
-    throw new CustomApiError(
-      "you should add that product to cart first",
-      StatusCodes.BAD_REQUEST
-    );
+  if (!cartItem) throw new NotFoundError("Cart not found");
 
   const product = await Product.findByPk(ProductId, { attributes: ["price"] });
 
-  if (!product) throw new NotFoundError("product", ProductId);
+  if (!product) throw new NotFoundError(`no product with id: ${ProductId}`);
 
   const oldQuantity = cartItem.getDataValue("quantity");
 
   const productPrice = product.getDataValue("price");
 
+  const subtotal = cart.getDataValue("subtotal");
+
   await cartItem.update({ quantity });
 
-  const newSubTotal =
-    cart.getDataValue("subtotal") - productPrice * (oldQuantity - +quantity);
+  const newSubTotal = subtotal - productPrice * (oldQuantity - +quantity);
 
   await cart.update({ subtotal: newSubTotal });
 
