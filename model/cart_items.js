@@ -8,22 +8,6 @@ const Product = require("./product.js");
 const CartItem = sequelize.define(
   "CartItem",
   {
-    CartId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: Cart,
-        key: "id",
-      },
-    },
-    ProductId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: Product,
-        key: "id",
-      },
-    },
     quantity: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -33,7 +17,6 @@ const CartItem = sequelize.define(
     },
   },
   {
-    indexes: [{ unique: true, fields: ["CartId", "ProductId"] }],
     timestamps: false,
   }
 );

@@ -1,13 +1,15 @@
+// Models
 const Cart = require("../model/cart.js");
-
 const CartItem = require("../model/cart_items.js");
-
 const Product = require("../model/product.js");
 
+// Errors
 const NotFoundError = require("../errors/notFound.js");
 const CustomApiError = require("../errors/custom.js");
 
 const { StatusCodes } = require("http-status-codes");
+
+const { col } = require("sequelize");
 
 const addToCart = async (req, res, next) => {
   const { productId: ProductId, quantity } = req.body;
@@ -41,34 +43,40 @@ const addToCart = async (req, res, next) => {
 const updateCart = async (req, res, next) => {
   const { productId: ProductId, quantity } = req.body;
 
-  const cart = await Cart.findOne({ where: { CustomerId: req.customerId } });
-
-  const cartItem = await CartItem.findOne({
-    where: { CartId: cart.getDataValue("id"), ProductId },
+  const cart = await Cart.findOne({
+    raw: true,
+    attributes: [
+      "subtotal",
+      [col("Products.price"), "productPrice"],
+      [col("Products.CartItem.quantity"), "quantity"],
+    ],
+    where: { CustomerId: req.customerId, "$Products.id$": ProductId },
+    include: {
+      model: Product,
+      attributes: [],
+      through: { attributes: [] },
+      required: true,
+    },
   });
 
-  if (!cartItem)
-    throw new CustomApiError(
-      "you should add that product to cart first",
-      StatusCodes.BAD_REQUEST
-    );
+  //   const product = await Product.findByPk(ProductId, { attributes: ["price"] });
 
-  const product = await Product.findByPk(ProductId, { attributes: ["price"] });
+  //   if (!product) throw new NotFoundError("product", ProductId);
 
-  if (!product) throw new NotFoundError("product", ProductId);
+  //   const oldQuantity = cartItem.getDataValue("quantity");
 
-  const oldQuantity = cartItem.getDataValue("quantity");
+  //   const productPrice = product.getDataValue("price");
 
-  const productPrice = product.getDataValue("price");
+  //   await cartItem.update({ quantity });
 
-  await cartItem.update({ quantity });
+  //   const newSubTotal =
+  //     cart.getDataValue("subtotal") - productPrice * (oldQuantity - +quantity);
 
-  const newSubTotal =
-    cart.getDataValue("subtotal") - productPrice * (oldQuantity - +quantity);
+  //   await cart.update({ subtotal: newSubTotal });
 
-  await cart.update({ subtotal: newSubTotal });
+  res.status(200).json({ cart });
 
-  res.sendStatus(StatusCodes.OK);
+  //   res.sendStatus(StatusCodes.OK);
 };
 
 module.exports = { addToCart, updateCart };
