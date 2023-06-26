@@ -5,7 +5,7 @@ const Product = require("../model/product.js");
 
 // Errors
 const NotFoundError = require("../errors/notFound.js");
-const CustomApiError = require("../errors/custom.js");
+const BadRequestError = require("../errors/badRequest.js");
 
 const { StatusCodes } = require("http-status-codes");
 
