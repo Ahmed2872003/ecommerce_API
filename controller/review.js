@@ -11,7 +11,7 @@ const calcWeightRate = require("../utility/calcWeightRate");
 
 const getReviewsTableFor = require("../utility/getReviewsTableFor");
 
-const CustomApiError = require("../errors/customError.js");
+const CustomApiError = require("../errors/custom.js");
 
 const createReview = async (req, res, next) => {
   await Review.create({ ...req.body, CustomerId: req.customerId });

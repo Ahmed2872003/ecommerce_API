@@ -2,7 +2,7 @@ const Customer = require("../model/customer.js");
 
 const { StatusCodes } = require("http-status-codes");
 
-const customAPIError = require("../errors/customError.js");
+const customAPIError = require("../errors/custom.js");
 
 const bcrypt = require("bcrypt");
 

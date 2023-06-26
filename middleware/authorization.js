@@ -1,6 +1,6 @@
 const { StatusCodes } = require("http-status-codes");
 
-const CustomAPIError = require("../errors/customError");
+const CustomAPIError = require("../errors/custom");
 
 const JWT = require("jsonwebtoken");
 

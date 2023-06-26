@@ -27,6 +27,7 @@ const productRouter = require("./routes/product.js");
 const customerRouter = require("./routes/customer.js");
 const authRouter = require("./routes/auth.js");
 const reviewRouter = require("./routes/review.js");
+const cartRouter = require("./routes/cart.js");
 
 // authorization
 const auth = require("./middleware/authorization.js");
@@ -49,6 +50,7 @@ app.use("/customer/auth", authRouter);
 app.use("/", auth);
 app.use("/customer", customerRouter);
 app.use("/review", reviewRouter);
+app.use("/cart", cartRouter);
 
 app.use(notFound);
 app.use(errorHandler);
