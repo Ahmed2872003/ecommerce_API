@@ -9,10 +9,20 @@ const BadRequestError = require("../errors/badRequest.js");
 
 const { StatusCodes } = require("http-status-codes");
 
-const { col } = require("sequelize");
+const { col, literal } = require("sequelize");
 
 const addToCart = async (req, res, next) => {
   const { productId: ProductId, quantity } = req.body;
+
+  const product = await Product.findByPk(ProductId, {
+    attributes: ["price", "quantity"],
+  });
+
+  if (!product) throw new NotFoundError("product", ProductId);
+
+  if (quantity > product.getDataValue("quantity"))
+    throw new BadRequestError(`This seller has only ${product.getDataValue("quantity")} of these available.`);
+
 
   let cart = await Cart.findOne({ where: { CustomerId: req.customerId } });
 
@@ -28,10 +38,6 @@ const addToCart = async (req, res, next) => {
     quantity,
   });
 
-  const product = await Product.findByPk(ProductId, { attributes: ["price"] });
-
-  if (!product) throw new NotFoundError("product", ProductId);
-
   await cart.update({
     subtotal:
       cart.getDataValue("subtotal") + product.getDataValue("price") * +quantity,
@@ -41,16 +47,21 @@ const addToCart = async (req, res, next) => {
 };
 
 const updateCart = async (req, res, next) => {
-  const { productId: ProductId, quantity } = req.body;
+  const { productId, quantity: neededQuantity } = req.body;
+
+  if (!productId || !neededQuantity)
+    throw new BadRequestError("Must provide both productId and quantity");
 
   const cart = await Cart.findOne({
     raw: true,
     attributes: [
       "subtotal",
+      "id",
       [col("Products.price"), "productPrice"],
-      [col("Products.CartItem.quantity"), "quantity"],
+      [col("Products.CartItem.quantity"), "oldQuantity"],
+      [col("Products.quantity"), "ProductQuantity"],
     ],
-    where: { CustomerId: req.customerId, "$Products.id$": ProductId },
+    where: { CustomerId: req.customerId, "$Products.id$": productId },
     include: {
       model: Product,
       attributes: [],
@@ -59,24 +70,59 @@ const updateCart = async (req, res, next) => {
     },
   });
 
-  //   const product = await Product.findByPk(ProductId, { attributes: ["price"] });
+  if (!cart) throw new NotFoundError(`No product found with id ${productId}`);
+  
+  if (neededQuantity > cart.ProductQuantity)
+    throw new BadRequestError(`This seller has only ${cart.ProductQuantity} of these available.`);
 
-  //   if (!product) throw new NotFoundError("product", ProductId);
+  
 
-  //   const oldQuantity = cartItem.getDataValue("quantity");
+  const { subtotal, id, productPrice, oldQuantity } = cart;
 
-  //   const productPrice = product.getDataValue("price");
+  const newSubtotal = subtotal - productPrice * (oldQuantity - +neededQuantity);
 
-  //   await cartItem.update({ quantity });
+  await Cart.update(
+    {
+      subtotal: newSubtotal,
+    },
+    { where: { id } }
+  );
 
-  //   const newSubTotal =
-  //     cart.getDataValue("subtotal") - productPrice * (oldQuantity - +quantity);
+  req.cart = { id, subtotal: newSubtotal };
 
-  //   await cart.update({ subtotal: newSubTotal });
-
-  res.status(200).json({ cart });
-
-  //   res.sendStatus(StatusCodes.OK);
+  next();
 };
 
-module.exports = { addToCart, updateCart };
+const updateCartItem = async (req, res, next) => {
+  const { productId: ProductId, quantity } = req.body;
+
+  const { id, subtotal } = req.cart;
+
+  await CartItem.update({ quantity }, { where: { ProductId, CartId: id } });
+
+  res.status(StatusCodes.OK).json({ data: { subtotal } });
+};
+
+const getCart = async(req, res, next) =>{
+  let cart = await Cart.findOne({
+
+    where: { CustomerId: req.customerId },
+    
+    attributes: ["subtotal"],
+    include:{
+      model: Product,
+      required: true,
+      attributes: [ "id", "name", "price",  [literal("`Products->CartItem`.`quantity`"), "quantity"]],
+      through:{model: CartItem , attributes: []}
+    }, 
+
+  });
+// [literal("products->CartItem.quantity"), "quantity"]
+  if(!cart)
+    cart = { subtotal: 0, Products: [] };
+
+  res.status(StatusCodes.OK).json({ data: { cart } });
+}
+
+
+module.exports = { addToCart, updateCart, updateCartItem, getCart };
