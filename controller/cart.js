@@ -124,5 +124,11 @@ const getCart = async(req, res, next) =>{
   res.status(StatusCodes.OK).json({ data: { cart } });
 }
 
+const deleteCart = async(req, res, next) =>{
+  const cart = await Cart.destroy({ where: { CustomerId: req.customerId } });
 
-module.exports = { addToCart, updateCart, updateCartItem, getCart };
+  res.sendStatus(StatusCodes.OK);
+}
+
+
+module.exports = { addToCart, updateCart, updateCartItem, getCart, deleteCart };
