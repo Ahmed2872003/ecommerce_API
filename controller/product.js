@@ -71,4 +71,10 @@ const getProduct = async (req, res, next) => {
   res.status(200).json({ data: result });
 };
 
-module.exports = { getAllProducts, getProduct };
+const createProduct = async (req, res, next) => {
+  await Product.create(req.body);
+
+  res.sendStatus(StatusCodes.CREATED);
+};
+
+module.exports = { getAllProducts, getProduct, createProduct };

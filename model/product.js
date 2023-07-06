@@ -19,10 +19,10 @@ const Product = sequelize.define(
     },
 
     description: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(500),
       allowNull: false,
       validate: {
-        len: [5, 150],
+        len: [5, 500],
       },
     },
     brand: {
@@ -44,6 +44,12 @@ const Product = sequelize.define(
     image_url: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        isValidUrl(url) {
+          if (url.match(/(https?:\/\/.*\.(?:png|jpg))/i) === null)
+            throw new Error("Provide a valid image url");
+        },
+      },
     },
     currency: {
       type: DataTypes.STRING,

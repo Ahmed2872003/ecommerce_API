@@ -29,7 +29,8 @@ const errorHandler = (err, req, res, next) => {
     } else if (
       validatorKey === "isPhoneNumber" ||
       validatorKey === "isValidFormat" ||
-      validatorKey === "isZipCode"
+      validatorKey === "isZipCode" ||
+      validatorKey === "isValidUrl"
     ) {
       customError.statusCode = StatusCodes.BAD_REQUEST;
     }
