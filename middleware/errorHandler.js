@@ -26,6 +26,12 @@ const errorHandler = (err, req, res, next) => {
     } else if (validatorKey === "max" || validatorKey === "min") {
       customError.msg = `${error["path"]} ${validatorKey} value is ${error["validatorArgs"][0]}`;
       customError.statusCode = StatusCodes.BAD_REQUEST;
+    } else if (
+      validatorKey === "isPhoneNumber" ||
+      validatorKey === "isValidFormat" ||
+      validatorKey === "isZipCode"
+    ) {
+      customError.statusCode = StatusCodes.BAD_REQUEST;
     }
   }
 

@@ -7,7 +7,13 @@ const {
   deleteReview,
 } = require("../controller/review.js");
 
-router.route("/").post(createReview).get(getReviews);
+const auth = require("../middleware/authorization.js");
+
+router.get("/", getReviews);
+
+router.use("/", auth);
+
+router.route("/").post(createReview);
 
 router.route("/:reviewId").patch(updateReview).delete(deleteReview);
 

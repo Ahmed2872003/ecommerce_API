@@ -15,11 +15,12 @@ const { col, literal } = require("sequelize");
 const updateSubtotal = require("../utility/updateSubtotal.js");
 
 const createCart = async (req, res, next) => {
-  let cart = await Cart.findOne({ where: { CustomerId: req.customerId } });
+  const { id: CustomerId } = req.customer;
+  let cart = await Cart.findOne({ where: { CustomerId } });
 
   //   Create a cart if not exist
   if (!cart) {
-    cart = await Cart.create({ CustomerId: req.customerId });
+    cart = await Cart.create({ CustomerId });
   }
 
   req.cart = cart;
@@ -51,7 +52,7 @@ const updateCart = async (req, res, next) => {
   const {
     cart: { id, subtotal },
     newSubtotal,
-  } = await updateSubtotal(req.customerId, productId, neededQuantity);
+  } = await updateSubtotal(req.customer.id, productId, neededQuantity);
 
   req.cart = { id, subtotal: newSubtotal };
 
@@ -60,7 +61,7 @@ const updateCart = async (req, res, next) => {
 
 const getCart = async (req, res, next) => {
   let cart = await Cart.findOne({
-    where: { CustomerId: req.customerId },
+    where: { CustomerId: req.customer.id },
 
     attributes: ["subtotal"],
     include: {
@@ -82,7 +83,7 @@ const getCart = async (req, res, next) => {
 };
 
 const deleteCart = async (req, res, next) => {
-  const cart = await Cart.destroy({ where: { CustomerId: req.customerId } });
+  const cart = await Cart.destroy({ where: { CustomerId: req.customer.id } });
 
   res.sendStatus(StatusCodes.OK);
 };

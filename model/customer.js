@@ -49,7 +49,7 @@ const Customer = sequelize.define(
             /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
           if (pass.match(regExp) === null)
             throw new Error(
-              "password must contain at least one: *Capital letter\n*Small letter\n*Number\n*Special character"
+              "password must contain\n- at least one:\n*Capital letter.\n*Small letter.\n*Number.\n*Special character.\n- From 8 to 32 character."
             );
         },
       },
@@ -102,6 +102,10 @@ const Customer = sequelize.define(
         },
       },
     },
+    seller: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
   },
   { indexes: [{ unique: true, fields: ["email"] }] }
 );
@@ -126,9 +130,16 @@ Customer.beforeUpdate(async (customer, options) => {
 });
 
 Customer.createJWT = (customer) =>
-  jwt.sign({ id: customer.id }, process.env.JWT_SECRET_KEY, {
-    expiresIn: "30d",
-  });
+  jwt.sign(
+    {
+      id: customer.getDataValue("id"),
+      seller: customer.getDataValue("seller"),
+    },
+    process.env.JWT_SECRET_KEY,
+    {
+      expiresIn: "30d",
+    }
+  );
 
 Customer.sync();
 

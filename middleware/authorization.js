@@ -15,8 +15,10 @@ const authorization = async (req, res, next) => {
 
   try {
     const token = authorization.split(" ")[1];
+
     const payload = JWT.verify(token, process.env.JWT_SECRET_KEY);
-    req.customerId = payload.id;
+
+    req.customer = { id: payload.id, seller: payload.seller };
     next();
   } catch (err) {
     throw new CustomAPIError(

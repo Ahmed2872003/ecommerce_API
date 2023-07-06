@@ -30,8 +30,6 @@ const login = async (req, res, next) => {
       StatusCodes.UNAUTHORIZED
     );
 
-  customer = customer.dataValues;
-
   if (await bcrypt.compare(password, customer.password)) {
     const token = Customer.createJWT(customer);
 

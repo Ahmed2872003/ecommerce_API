@@ -11,10 +11,13 @@ const calcWeightRate = require("../utility/calcWeightRate");
 
 const getReviewsTableFor = require("../utility/getReviewsTableFor");
 
+// Errors
+const notFound = require("../errors/notFound.js");
+const customAPIError = require("../errors/custom.js");
 const CustomApiError = require("../errors/custom.js");
 
 const createReview = async (req, res, next) => {
-  await Review.create({ ...req.body, CustomerId: req.customerId });
+  await Review.create({ ...req.body, CustomerId: req.customer.id });
 
   res.sendStatus(StatusCodes.CREATED);
 
@@ -69,7 +72,13 @@ const updateReview = async (req, res, next) => {
 
   const review = await Review.findByPk(id);
 
-  if (!review) throw new CustomApiError(`No review found with that id: ${id}`);
+  if (!review) throw new notFound("review", id);
+
+  if (review.getDataValue("CustomerId") !== req.customer.id)
+    throw new CustomApiError(
+      "You aren't allowed to edit others message",
+      StatusCodes.FORBIDDEN
+    );
 
   await review.update(req.body);
 
@@ -95,7 +104,13 @@ const deleteReview = async (req, res, next) => {
 
   const review = await Review.findByPk(id);
 
-  if (!review) throw new CustomApiError(`No review found with that id: ${id}`);
+  if (!review) throw new notFound("review", id);
+
+  if (review.getDataValue("CustomerId") !== req.customer.id)
+    throw new CustomApiError(
+      "You aren't allowed to delete others message",
+      StatusCodes.FORBIDDEN
+    );
 
   await review.destroy();
 

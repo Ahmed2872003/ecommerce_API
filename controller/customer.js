@@ -14,7 +14,7 @@ const updateCustomer = async (req, res, next) => {
   if (!password)
     throw new CustomAPIError("Must provide password", StatusCodes.BAD_REQUEST);
 
-  const customer = await Customer.findByPk(req.customerId);
+  const customer = await Customer.findByPk(req.customer.id);
 
   if (!(await bcrypt.compare(password, customer.get("password"))))
     throw new CustomAPIError("Incorrect password", StatusCodes.BAD_REQUEST);
@@ -34,7 +34,8 @@ const updateCustomer = async (req, res, next) => {
 };
 
 const getCustomer = async (req, res, next) => {
-  const customer = await Customer.findByPk(req.customerId, {
+  const { id: customerID } = req.customer;
+  const customer = await Customer.findByPk(customerID, {
     attributes: {
       exclude: ["password", "first_name", "last_name"],
       include: [
@@ -45,7 +46,7 @@ const getCustomer = async (req, res, next) => {
 
   if (!customer)
     throw new CustomAPIError(
-      `No customer found with that id: ${req.customerId}`,
+      `No customer found with that id: ${customerID}`,
       StatusCodes.NOT_FOUND
     );
 

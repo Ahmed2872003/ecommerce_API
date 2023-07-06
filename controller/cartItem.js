@@ -53,7 +53,7 @@ const deleteCartItem = async (req, res, next) => {
 
   const {
     cart: { id: CartId },
-  } = await updateSubtotal(req.customerId, ProductId, 0);
+  } = await updateSubtotal(req.customer.id, ProductId, 0);
 
   await CartItem.destroy({ where: { CartId, ProductId } });
 

@@ -47,9 +47,9 @@ app.use(xss());
 
 app.use("/product", productRouter);
 app.use("/customer/auth", authRouter);
+app.use("/review", reviewRouter);
 app.use("/", auth);
 app.use("/customer", customerRouter);
-app.use("/review", reviewRouter);
 app.use("/cart", cartRouter);
 
 app.use(notFound);
