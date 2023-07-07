@@ -3,7 +3,6 @@ const { DataTypes, ValidationError } = require("sequelize");
 const sequelize = require("../DB/connect.js");
 
 const { StatusCodes } = require("http-status-codes");
-const { contentSecurityPolicy } = require("helmet");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 

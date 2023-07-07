@@ -32,7 +32,7 @@ const updateSubtotal = async (CustomerId, productId, neededQuantity) => {
       `This seller has only ${cart.ProductQuantity} of these available.`
     );
 
-  const { subtotal, id, productPrice, oldQuantity } = cart.dataValues;
+  const { subtotal, productPrice, oldQuantity } = cart.dataValues;
 
   const newSubtotal = subtotal - productPrice * (oldQuantity - +neededQuantity);
 

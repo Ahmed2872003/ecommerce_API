@@ -19,7 +19,7 @@ const getAllProducts = async (req, res, next) => {
   const products = await Product.findAll({
     raw: true,
     attributes: {
-      exclude: ["description", "brand", "quantity", "CategoryId"],
+      exclude: ["description", "brand", "quantity", "CategoryId", "SellerId"],
       include: [[col("Category.name"), "category"]],
     },
     include: {
@@ -72,6 +72,7 @@ const getProduct = async (req, res, next) => {
 };
 
 const createProduct = async (req, res, next) => {
+  req.body.SellerId = req.customer.id;
   await Product.create(req.body);
 
   res.sendStatus(StatusCodes.CREATED);

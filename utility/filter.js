@@ -3,7 +3,8 @@ const { Op, Sequelize } = require("sequelize");
 const userToSeqFilter = (filter) => {
   let res = [];
 
-  const { name, minPrice, maxPrice, minRating, maxRating, category } = filter;
+  const { name, minPrice, maxPrice, minRating, maxRating, category, sellerId } =
+    filter;
 
   if (name) res.push({ name: { [Op.like]: `%${name}%` } });
 
@@ -22,6 +23,8 @@ const userToSeqFilter = (filter) => {
     if (minRating) res.push({ rating: { [Op.gte]: minRating } });
     if (maxRating) res.push({ rating: { [Op.lte]: maxRating } });
   }
+
+  if (sellerId) res.push({ SellerId: sellerId });
 
   return res;
 };

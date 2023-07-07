@@ -4,6 +4,8 @@ const sequelize = require("../DB/connect.js");
 
 const Category = require("./category.js");
 
+const Customer = require("./customer.js");
+
 const Product = sequelize.define(
   "Product",
   {
@@ -61,6 +63,9 @@ const Product = sequelize.define(
 
 Category.hasMany(Product);
 Product.belongsTo(Category);
+
+Customer.hasMany(Product, { as: "Seller", foreignKey: "SellerId" });
+Product.belongsTo(Customer, { as: "Seller", foreignKey: "SellerId" });
 
 Product.sync();
 
