@@ -13,6 +13,7 @@ const notFound = require("../errors/notFound.js");
 
 // Utility
 const userToSeqFilter = require("../utility/filter.js");
+const updateSubtotal = require("../utility/updateSubtotal.js");
 
 const getAllProducts = async (req, res, next) => {
   // Converting user filter to sequelize filter
@@ -115,7 +116,39 @@ const updateProduct = async (req, res, next) => {
 
   await product.update(req.body);
 
-  res.sendStatus(200);
+  res.sendStatus(StatusCodes.OK);
 };
 
-module.exports = { getAllProducts, getProduct, createProduct, updateProduct };
+const deleteProduct = async (req, res, next) => {
+  const { productId } = req.params;
+
+  const product = await Product.findByPk(productId);
+  if (!product) throw new notFound("product", productId);
+  const { price } = product.dataValues;
+
+  const cartItems = await CartItem.findAll({
+    where: { ProductId: productId },
+    include: { model: Cart },
+  });
+
+  // Delete the product from all carts that have it
+  for (const cartItem of cartItems) {
+    const cart = cartItem["Cart"];
+    const { subtotal } = cart.dataValues;
+    const { quantity } = cartItem.dataValues;
+
+    await cart.update({ subtotal: subtotal - quantity * price });
+  }
+
+  await product.destroy();
+
+  res.sendStatus(StatusCodes.OK);
+};
+
+module.exports = {
+  getAllProducts,
+  getProduct,
+  createProduct,
+  updateProduct,
+  deleteProduct,
+};

@@ -5,6 +5,7 @@ const {
   getProduct,
   createProduct,
   updateProduct,
+  deleteProduct,
 } = require("../controller/product.js");
 
 const auth = require("../middleware/authorization.js");
@@ -16,8 +17,8 @@ router.get("/:id", getProduct);
 
 router.use("/", auth, isSeller);
 
-router.route("/").post(createProduct);
+router.post("/", createProduct);
 
-router.route("/:productId").patch(updateProduct);
+router.route("/:productId").patch(updateProduct).delete(deleteProduct);
 
 module.exports = router;
