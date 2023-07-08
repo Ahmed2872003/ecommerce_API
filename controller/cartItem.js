@@ -6,6 +6,7 @@ const Cart = require("../model/cart.js");
 const Product = require("../model/product.js");
 // Errors
 const NotFoundError = require("../errors/notFound.js");
+const BadRequestError = require("../errors/badRequest.js");
 
 const updateSubtotal = require("../utility/updateSubtotal.js");
 

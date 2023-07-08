@@ -3,8 +3,13 @@ const { Op, col } = require("sequelize");
 // Models
 const Category = require("../model/category.js");
 const Product = require("../model/product.js");
+const CartItem = require("../model/cart_items.js");
+const Cart = require("../model/cart.js");
 
 const { StatusCodes } = require("http-status-codes");
+
+// Errors
+const notFound = require("../errors/notFound.js");
 
 // Utility
 const userToSeqFilter = require("../utility/filter.js");
@@ -78,4 +83,39 @@ const createProduct = async (req, res, next) => {
   res.sendStatus(StatusCodes.CREATED);
 };
 
-module.exports = { getAllProducts, getProduct, createProduct };
+const updateProduct = async (req, res, next) => {
+  const { productId } = req.params;
+  const { quantity: newQuantity, price } = req.body;
+
+  const product = await Product.findByPk(productId);
+  if (!product) throw new notFound("product", productId);
+  const { quantity: oldQuantity, price: Oldprice } = product.dataValues;
+
+  const cartItems = await CartItem.findAll({
+    where: { ProductId: productId },
+    include: { model: Cart },
+  });
+
+  if (newQuantity !== undefined || price !== undefined) {
+    for (const cartItem of cartItems) {
+      const cart = cartItem["Cart"];
+      const { subtotal } = cart.dataValues;
+      const requestedQ = cartItem.getDataValue("quantity");
+
+      // When the seller need to update quantity and the new quantity is less than the requested quantity by the customer delete the product from his cart else update subtotal according the new price
+      if (newQuantity !== undefined && requestedQ > newQuantity) {
+        await cartItem.destroy();
+        await cart.update({ subtotal: subtotal - requestedQ * Oldprice });
+      } else if (price !== undefined)
+        await cart.update({
+          subtotal: subtotal - requestedQ * (Oldprice - price),
+        });
+    }
+  }
+
+  await product.update(req.body);
+
+  res.sendStatus(200);
+};
+
+module.exports = { getAllProducts, getProduct, createProduct, updateProduct };

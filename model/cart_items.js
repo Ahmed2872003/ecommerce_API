@@ -24,6 +24,9 @@ const CartItem = sequelize.define(
 Cart.belongsToMany(Product, { through: CartItem, onDelete: "CASCADE" });
 Product.belongsToMany(Cart, { through: CartItem, onDelete: "CASCADE" });
 
+CartItem.belongsTo(Product);
+CartItem.belongsTo(Cart);
+
 CartItem.sync();
 
 module.exports = CartItem;
