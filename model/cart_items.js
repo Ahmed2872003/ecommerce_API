@@ -25,7 +25,10 @@ Cart.belongsToMany(Product, { through: CartItem, onDelete: "CASCADE" });
 Product.belongsToMany(Cart, { through: CartItem, onDelete: "CASCADE" });
 
 CartItem.belongsTo(Product);
-CartItem.belongsTo(Cart);
+CartItem.belongsTo(Cart, { onDelete: "CASCADE" });
+
+Product.hasMany(CartItem);
+Cart.hasMany(CartItem);
 
 CartItem.sync();
 

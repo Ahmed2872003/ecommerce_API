@@ -2,8 +2,8 @@ const Cart = require("../model/cart.js");
 const Product = require("../model/product.js");
 
 // Errors
-const NotFoundError = require("../errors/badRequest.js");
-const BadRequestError = require("../errors/notFound.js");
+const NotFoundError = require("../errors/notFound.js");
+const BadRequestError = require("../errors/badRequest.js");
 
 const { col } = require("sequelize");
 
@@ -27,12 +27,13 @@ const updateSubtotal = async (CustomerId, productId, neededQuantity) => {
 
   if (!cart) throw new NotFoundError(`No product found with id ${productId}`);
 
-  if (neededQuantity > cart.ProductQuantity)
-    throw new BadRequestError(
-      `This seller has only ${cart.ProductQuantity} of these available.`
-    );
+  const { subtotal, productPrice, oldQuantity, ProductQuantity } =
+    cart.dataValues;
 
-  const { subtotal, productPrice, oldQuantity } = cart.dataValues;
+  if (neededQuantity > ProductQuantity)
+    throw new BadRequestError(
+      `This seller has only ${ProductQuantity} of these available.`
+    );
 
   const newSubtotal = subtotal - productPrice * (oldQuantity - +neededQuantity);
 

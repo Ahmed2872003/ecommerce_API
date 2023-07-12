@@ -9,10 +9,9 @@ const BadRequestError = require("../errors/badRequest.js");
 
 const { StatusCodes } = require("http-status-codes");
 
-const { col, literal } = require("sequelize");
-
 // utility
 const updateSubtotal = require("../utility/updateSubtotal.js");
+const findCart = require("../utility/getCart.js");
 
 const createCart = async (req, res, next) => {
   const { id: CustomerId } = req.customer;
@@ -60,22 +59,7 @@ const updateCart = async (req, res, next) => {
 };
 
 const getCart = async (req, res, next) => {
-  let cart = await Cart.findOne({
-    where: { CustomerId: req.customer.id },
-
-    attributes: ["subtotal"],
-    include: {
-      model: Product,
-      required: true,
-      attributes: [
-        "id",
-        "name",
-        "price",
-        [literal("`Products->CartItem`.`quantity`"), "quantity"],
-      ],
-      through: { model: CartItem, attributes: [] },
-    },
-  });
+  let cart = await findCart(req.customer.id);
 
   if (!cart) cart = { subtotal: 0, Products: [] };
 
