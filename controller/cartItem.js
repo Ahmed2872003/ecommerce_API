@@ -21,11 +21,13 @@ const addCartItem = async (req, res, next) => {
 
   if (!product) throw new NotFoundError("product", ProductId);
 
-  if (quantity > product.getDataValue("quantity"))
+  const { quantity: Productquantity } = product.dataValues;
+
+  if (quantity > Productquantity)
     throw new BadRequestError(
-      `This seller has only ${product.getDataValue(
-        "quantity"
-      )} of these available.`
+      Productquantity
+        ? `This seller has only ${Productquantity} of these available.`
+        : `That product aren't available`
     );
 
   await CartItem.create({

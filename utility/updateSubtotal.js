@@ -32,7 +32,9 @@ const updateSubtotal = async (CustomerId, productId, neededQuantity) => {
 
   if (neededQuantity > ProductQuantity)
     throw new BadRequestError(
-      `This seller has only ${ProductQuantity} of these available.`
+      ProductQuantity
+        ? `This seller has only ${ProductQuantity} of these available.`
+        : `That product aren't available`
     );
 
   const newSubtotal = subtotal - productPrice * (oldQuantity - +neededQuantity);
