@@ -36,12 +36,6 @@ const createOrder = async (req, res, next) => {
   next();
 };
 
-const deleteOrder = async (req, res, next) => {
-  await Order.destroy({ where: { id: req.params.orderId } });
-
-  res.sendStatus(200);
-};
-
 const confirmOrder = async (req, res, next) => {
   const { btoken, id } = req.body;
 
@@ -85,4 +79,4 @@ const confirmOrder = async (req, res, next) => {
   res.sendStatus(200);
 };
 
-module.exports = { createOrder, deleteOrder, confirmOrder };
+module.exports = { createOrder, confirmOrder };
