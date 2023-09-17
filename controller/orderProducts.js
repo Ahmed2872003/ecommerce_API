@@ -48,7 +48,7 @@ const getOrderProducts = async (req, res, next) => {
       through: { model: orderProduct, attributes: [] },
     },
   });
-  res.status(200).json({ orders: orderProdcuts });
+  res.status(200).json({ data: { orders: orderProdcuts } });
 };
 
 module.exports = { createOrderProducts, getOrderProducts };

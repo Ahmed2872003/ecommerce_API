@@ -10,10 +10,12 @@ const { StatusCodes } = require("http-status-codes");
 
 // Errors
 const notFound = require("../errors/notFound.js");
+const BadRequest = require("../errors/badRequest.js");
 
 // Utility
 const userToSeqFilter = require("../utility/filter.js");
 const updateSubtotal = require("../utility/updateSubtotal.js");
+const cloudinary = require("../utility/cloudinary.js");
 
 const getAllProducts = async (req, res, next) => {
   // Converting user filter to sequelize filter
@@ -25,7 +27,14 @@ const getAllProducts = async (req, res, next) => {
   const products = await Product.findAll({
     raw: true,
     attributes: {
-      exclude: ["description", "brand", "quantity", "CategoryId", "SellerId"],
+      exclude: [
+        "description",
+        "brand",
+        "quantity",
+        "CategoryId",
+        "SellerId",
+        "images",
+      ],
       include: [[col("Category.name"), "category"]],
     },
     include: {
@@ -45,14 +54,13 @@ const getAllProducts = async (req, res, next) => {
     offset,
   });
 
-  res.status(200).json({ data: products, length: products.length });
+  res.status(200).json({ data: { products, length: products.length } });
 };
 
 const getProduct = async (req, res, next) => {
   const { id } = req.params;
 
-  const result = await Product.findOne({
-    raw: true,
+  const product = await Product.findOne({
     attributes: {
       exclude: ["CategoryId"],
       include: [[col("Category.name"), "category"]],
@@ -67,29 +75,81 @@ const getProduct = async (req, res, next) => {
     },
   });
 
-  if (!result) {
+  if (!product) {
     res
       .status(StatusCodes.NOT_FOUND)
       .json({ msg: `no product with ID: ${id}` });
     return;
   }
 
-  res.status(200).json({ data: result });
+  res.status(200).json({ data: { product } });
 };
 
 const createProduct = async (req, res, next) => {
   req.body.SellerId = req.customer.id;
-  await Product.create(req.body);
 
-  res.sendStatus(StatusCodes.CREATED);
+  if (
+    !(
+      req.files["image"] &&
+      req.files["images"] &&
+      req.files["images"].length === 5
+    )
+  )
+    throw new BadRequest(
+      "Should provide 1 image for product cover and 5 for product images"
+    );
+  let { image, images } = req.files;
+  [image] = image;
+
+  const product = await Product.create({
+    ...req.body,
+    image: "",
+    images: [],
+  });
+
+  const coverImgPubId = await cloudinary.upload_stream(image, "products");
+
+  const imagesPubId = await cloudinary.upload_bulk_stream(images, "products");
+
+  await product.update({ image: coverImgPubId, images: imagesPubId });
+
+  res.status(StatusCodes.CREATED).json({
+    data: {
+      product: { id: product.getDataValue("id"), image: coverImgPubId },
+    },
+  });
 };
 
 const updateProduct = async (req, res, next) => {
   const { productId } = req.params;
+
   const { quantity: newQuantity, price } = req.body;
 
   const product = await Product.findByPk(productId);
+
   if (!product) throw new notFound("product", productId);
+
+  if (req.files["image"]) {
+    const [image] = req.files["image"];
+    await cloudinary.upload_stream(
+      image,
+      "products",
+      product.getDataValue("image")
+    );
+  }
+  if (req.files["images"]) {
+    const images = req.files["images"];
+
+    if (images.length !== 5)
+      throw new BadRequest("Must provide 5 for product images");
+
+    await cloudinary.upload_bulk_stream(
+      images,
+      "products",
+      product.get("images")
+    );
+  }
+
   const { quantity: oldQuantity, price: Oldprice } = product.dataValues;
 
   const cartItems = await CartItem.findAll({
@@ -124,6 +184,11 @@ const deleteProduct = async (req, res, next) => {
 
   const product = await Product.findByPk(productId);
   if (!product) throw new notFound("product", productId);
+
+  const imagesPubId = product.get("images");
+
+  imagesPubId.push(product.getDataValue("image"));
+
   const { price } = product.dataValues;
 
   const cartItems = await CartItem.findAll({
@@ -139,6 +204,8 @@ const deleteProduct = async (req, res, next) => {
 
     await cart.update({ subtotal: subtotal - quantity * price });
   }
+
+  await cloudinary.upload_bulk_destroy(imagesPubId);
 
   await product.destroy();
 

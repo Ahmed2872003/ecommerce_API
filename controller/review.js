@@ -64,7 +64,9 @@ const getReviews = async (req, res, next) => {
     order: [["rating", "DESC"]],
   });
 
-  res.status(StatusCodes.OK).json({ data: reviews, length: reviews.length });
+  res
+    .status(StatusCodes.OK)
+    .json({ data: { reviews, length: reviews.length } });
 };
 
 const updateReview = async (req, res, next) => {

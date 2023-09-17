@@ -5,8 +5,15 @@
     "description": "A powerful and feature-packed smartphone from Apple.",
     "price": 999,
     "quantity": 100,
-    "image_url": "https://example.com/iphone12.jpg",
+    "image": "https://example.com/iphone12.jpg",
     "CategoryId": 1,
+    "images": [
+      "https://example.com",
+      "https://example.com",
+      "https://example.com",
+      "https://example.com",
+      "https://example.com"
+    ],
     "brand": "iPhone",
     "currency": "USD"
   },
@@ -16,8 +23,15 @@
     "description": "A high-end Android smartphone from Samsung.",
     "price": 899,
     "quantity": 50,
-    "image_url": "https://example.com/galaxys21.jpg",
+    "image": "https://example.com/galaxys21.jpg",
     "CategoryId": 1,
+    "images": [
+      "https://example.com",
+      "https://example.com",
+      "https://example.com",
+      "https://example.com",
+      "https://example.com"
+    ],
     "brand": "Samsung",
     "currency": "USD"
   },
@@ -27,8 +41,15 @@
     "description": "The latest and greatest gaming console from Sony.",
     "price": 499,
     "quantity": 20,
-    "image_url": "https://example.com/ps5.jpg",
+    "image": "https://example.com/ps5.jpg",
     "CategoryId": 1,
+    "images": [
+      "https://example.com",
+      "https://example.com",
+      "https://example.com",
+      "https://example.com",
+      "https://example.com"
+    ],
     "brand": "Sony",
     "currency": "USD"
   },
@@ -38,8 +59,15 @@
     "description": "The most powerful gaming console from Microsoft.",
     "price": 499,
     "quantity": 15,
-    "image_url": "https://example.com/xboxseriesx.jpg",
+    "image": "https://example.com/xboxseriesx.jpg",
     "CategoryId": 1,
+    "images": [
+      "https://example.com",
+      "https://example.com",
+      "https://example.com",
+      "https://example.com",
+      "https://example.com"
+    ],
     "brand": "Microsoft",
     "currency": "USD"
   },
@@ -49,8 +77,15 @@
     "description": "A high-performance laptop from Apple.",
     "price": 1499,
     "quantity": 30,
-    "image_url": "https://example.com/macbookpro.jpg",
+    "image": "https://example.com/macbookpro.jpg",
     "CategoryId": 2,
+    "images": [
+      "https://example.com",
+      "https://example.com",
+      "https://example.com",
+      "https://example.com",
+      "https://example.com"
+    ],
     "brand": "Apple",
     "currency": "USD"
   },
@@ -60,8 +95,15 @@
     "description": "A sleek and powerful laptop from Dell.",
     "price": 1199,
     "quantity": 25,
-    "image_url": "https://example.com/xps13.jpg",
+    "image": "https://example.com/xps13.jpg",
     "CategoryId": 2,
+    "images": [
+      "https://example.com",
+      "https://example.com",
+      "https://example.com",
+      "https://example.com",
+      "https://example.com"
+    ],
     "brand": "Dell",
     "currency": "USD"
   },
@@ -71,8 +113,15 @@
     "description": "A high-end 4K TV from Samsung.",
     "price": 1499,
     "quantity": 10,
-    "image_url": "https://example.com/qledtv.jpg",
+    "image": "https://example.com/qledtv.jpg",
     "CategoryId": 1,
+    "images": [
+      "https://example.com",
+      "https://example.com",
+      "https://example.com",
+      "https://example.com",
+      "https://example.com"
+    ],
     "brand": "Samsung",
     "currency": "USD"
   },
@@ -82,8 +131,15 @@
     "description": "A premium 4K TV with OLED display technology.",
     "price": 1999,
     "quantity": 5,
-    "image_url": "https://example.com/oledtv.jpg",
+    "image": "https://example.com/oledtv.jpg",
     "CategoryId": 1,
+    "images": [
+      "https://example.com",
+      "https://example.com",
+      "https://example.com",
+      "https://example.com",
+      "https://example.com"
+    ],
     "brand": "LG",
     "currency": "USD"
   },
@@ -93,8 +149,15 @@
     "description": "A popular noise-cancelling headphone from Bose.",
     "price": 299,
     "quantity": 40,
-    "image_url": "https://example.com/qc35.jpg",
+    "image": "https://example.com/qc35.jpg",
     "CategoryId": 1,
+    "images": [
+      "https://example.com",
+      "https://example.com",
+      "https://example.com",
+      "https://example.com",
+      "https://example.com"
+    ],
     "brand": "Bose",
     "currency": "USD"
   },
@@ -104,8 +167,15 @@
     "description": "A high-end noise-cancelling headphone from Sony.",
     "price": 349,
     "quantity": 30,
-    "image_url": "https://example.com/wh1000xm4.jpg",
+    "image": "https://example.com/wh1000xm4.jpg",
     "CategoryId": 1,
+    "images": [
+      "https://example.com",
+      "https://example.com",
+      "https://example.com",
+      "https://example.com",
+      "https://example.com"
+    ],
     "brand": "Sony",
     "currency": "USD"
   },
@@ -115,8 +185,15 @@
     "description": "A popular fitness tracker from Fitbit.",
     "price": 149,
     "quantity": 50,
-    "image_url": "https://example.com/charge4.jpg",
+    "image": "https://example.com/charge4.jpg",
     "CategoryId": 3,
+    "images": [
+      "https://example.com",
+      "https://example.com",
+      "https://example.com",
+      "https://example.com",
+      "https://example.com"
+    ],
     "brand": "Fitbit",
     "currency": "USD"
   },
@@ -126,8 +203,15 @@
     "description": "A high-end GPS running watch from Garmin.",
     "price": 599,
     "quantity": 15,
-    "image_url": "https://example.com/forerunner945.jpg",
+    "image": "https://example.com/forerunner945.jpg",
     "CategoryId": 3,
+    "images": [
+      "https://example.com",
+      "https://example.com",
+      "https://example.com",
+      "https://example.com",
+      "https://example.com"
+    ],
     "brand": "Garmin",
     "currency": "USD"
   },
@@ -137,8 +221,15 @@
     "description": "A high-end mirrorless camera from Canon.",
     "price": 3899,
     "quantity": 5,
-    "image_url": "https://example.com/eosr5.jpg",
+    "image": "https://example.com/eosr5.jpg",
     "CategoryId": 4,
+    "images": [
+      "https://example.com",
+      "https://example.com",
+      "https://example.com",
+      "https://example.com",
+      "https://example.com"
+    ],
     "brand": "Canon",
     "currency": "USD"
   },
@@ -148,8 +239,15 @@
     "description": "A high-end mirrorless camera from Sony.",
     "price": 3499,
     "quantity": 10,
-    "image_url": "https://example.com/a7riv.jpg",
+    "image": "https://example.com/a7riv.jpg",
     "CategoryId": 4,
+    "images": [
+      "https://example.com",
+      "https://example.com",
+      "https://example.com",
+      "https://example.com",
+      "https://example.com"
+    ],
     "brand": "Sony",
     "currency": "USD"
   },
@@ -159,8 +257,15 @@
     "description": "A high-end DSLR camera from Nikon.",
     "price": 3299,
     "quantity": 8,
-    "image_url": "https://example.com/d850.jpg",
+    "image": "https://example.com/d850.jpg",
     "CategoryId": 4,
+    "images": [
+      "https://example.com",
+      "https://example.com",
+      "https://example.com",
+      "https://example.com",
+      "https://example.com"
+    ],
     "brand": "Nikon",
     "currency": "USD"
   },
@@ -170,8 +275,15 @@
     "description": "A smart display with Google Assistant built-in.",
     "price": 129,
     "quantity": 20,
-    "image_url": "https://example.com/nesthub.jpg",
+    "image": "https://example.com/nesthub.jpg",
     "CategoryId": 1,
+    "images": [
+      "https://example.com",
+      "https://example.com",
+      "https://example.com",
+      "https://example.com",
+      "https://example.com"
+    ],
     "brand": "Google",
     "currency": "USD"
   },
@@ -181,8 +293,15 @@
     "description": "A smart display with Alexa built-in and a rotating screen.",
     "price": 249,
     "quantity": 15,
-    "image_url": "https://example.com/echoshow10.jpg",
+    "image": "https://example.com/echoshow10.jpg",
     "CategoryId": 1,
+    "images": [
+      "https://example.com",
+      "https://example.com",
+      "https://example.com",
+      "https://example.com",
+      "https://example.com"
+    ],
     "brand": "Amazon",
     "currency": "USD"
   },
@@ -192,8 +311,15 @@
     "description": "A high-end robot vacuum cleaner from iRobot.",
     "price": 999,
     "quantity": 5,
-    "image_url": "https://example.com/roombai7+.jpg",
+    "image": "https://example.com/roombai7+.jpg",
     "CategoryId": 5,
+    "images": [
+      "https://example.com",
+      "https://example.com",
+      "https://example.com",
+      "https://example.com",
+      "https://example.com"
+    ],
     "brand": "iRobot",
     "currency": "USD"
   },
@@ -203,8 +329,15 @@
     "description": "A powerful cordless vacuum cleaner from Dyson.",
     "price": 499,
     "quantity": 10,
-    "image_url": "https://example.com/cyclonev10.jpg",
+    "image": "https://example.com/cyclonev10.jpg",
     "CategoryId": 5,
+    "images": [
+      "https://example.com",
+      "https://example.com",
+      "https://example.com",
+      "https://example.com",
+      "https://example.com"
+    ],
     "brand": "Dyson",
     "currency": "USD"
   },
@@ -214,8 +347,15 @@
     "description": "A popular multi-cooker from Instant Pot.",
     "price": 99,
     "quantity": 30,
-    "image_url": "https://example.com/instantpotduo.jpg",
+    "image": "https://example.com/instantpotduo.jpg",
     "CategoryId": 5,
+    "images": [
+      "https://example.com",
+      "https://example.com",
+      "https://example.com",
+      "https://example.com",
+      "https://example.com"
+    ],
     "brand": "Instant",
     "currency": "USD"
   }

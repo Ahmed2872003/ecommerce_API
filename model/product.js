@@ -43,14 +43,18 @@ const Product = sequelize.define(
       type: DataTypes.FLOAT,
       defaultValue: 0.0,
     },
-    image_url: {
+    image: {
       type: DataTypes.STRING,
       allowNull: false,
-      validate: {
-        isValidUrl(url) {
-          if (url.match(/(https?:\/\/.*\.(?:png|jpg))/i) === null)
-            throw new Error("Provide a valid image url");
-        },
+    },
+    images: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      get() {
+        return this.getDataValue("images").split(";");
+      },
+      set(val) {
+        this.setDataValue("images", val.join(";"));
       },
     },
     currency: {
