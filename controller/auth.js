@@ -9,9 +9,7 @@ const bcrypt = require("bcrypt");
 const signup = async (req, res, next) => {
   const customer = await Customer.create(req.body);
 
-  const token = Customer.createJWT(customer);
-
-  res.status(StatusCodes.CREATED).json({ data: { token } });
+  res.sendStatus(StatusCodes.CREATED);
 };
 
 const login = async (req, res, next) => {
@@ -31,9 +29,12 @@ const login = async (req, res, next) => {
     );
 
   if (await bcrypt.compare(password, customer.password)) {
-    const token = Customer.createJWT(customer);
-
-    res.status(StatusCodes.OK).json({ data: { token } });
+    if (customer.getDataValue("confirmed")) {
+      const token = Customer.createJWT(customer);
+      res.status(StatusCodes.OK).json({ data: { token } });
+    } else {
+      res.status(StatusCodes.UNAUTHORIZED).json({ msg: "Email not confirmed" });
+    }
   } else {
     res.status(StatusCodes.BAD_REQUEST).json({ msg: "Wrong password" });
   }

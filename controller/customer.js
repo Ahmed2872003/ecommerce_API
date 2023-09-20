@@ -1,9 +1,10 @@
+// Models
 const Customer = require("../model/customer.js");
 
-const { StatusCodes } = require("http-status-codes");
-
+// Errors
 const CustomAPIError = require("../errors/custom.js");
 
+const { StatusCodes } = require("http-status-codes");
 const bcrypt = require("bcrypt");
 
 const { fn, col } = require("sequelize");

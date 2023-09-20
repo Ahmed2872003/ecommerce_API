@@ -6,6 +6,8 @@ const express = require("express");
 
 const app = express();
 
+const multer = require("multer");
+
 const port = process.env.PORT || 5000;
 
 // db connection
@@ -29,6 +31,7 @@ const authRouter = require("./routes/auth.js");
 const reviewRouter = require("./routes/review.js");
 const cartRouter = require("./routes/cart.js");
 const orderRouter = require("./routes/order.js");
+const emailRouter = require("./routes/email.js");
 // authorization
 const auth = require("./middleware/authorization.js");
 
@@ -42,12 +45,13 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(helmet());
-app.use(cors({ origin: "http://localhost:5000" }));
+app.use(cors({ origin: "http://localhost:3000" }));
 app.use(xss());
 
 app.use("/product", productRouter);
-app.use("/customer/auth", authRouter);
+app.use("/customer/auth", multer().none(), authRouter);
 app.use("/review", reviewRouter);
+app.use("/email", emailRouter);
 app.use("/", auth);
 app.use("/customer", customerRouter);
 app.use("/cart", cartRouter);

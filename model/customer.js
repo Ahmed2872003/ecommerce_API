@@ -38,6 +38,10 @@ const Customer = sequelize.define(
         },
       },
     },
+    confirmed: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
     password: {
       type: DataTypes.STRING,
       allowNull: false,
