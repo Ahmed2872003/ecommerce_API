@@ -29,6 +29,12 @@ const Customer = sequelize.define(
         len: [3, 15],
       },
     },
+    full_name: {
+      type: DataTypes.VIRTUAL,
+      get() {
+        return `${this.first_name} ${this.last_name}`;
+      },
+    },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -71,7 +77,7 @@ const Customer = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        len: [5, 30],
+        len: [5, 100],
       },
     },
     city: {

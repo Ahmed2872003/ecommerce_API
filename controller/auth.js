@@ -31,7 +31,9 @@ const login = async (req, res, next) => {
   if (await bcrypt.compare(password, customer.password)) {
     if (customer.getDataValue("confirmed")) {
       const token = Customer.createJWT(customer);
-      res.status(StatusCodes.OK).json({ data: { token } });
+      res
+        .status(StatusCodes.OK)
+        .json({ data: { token, name: customer.get("full_name") } });
     } else {
       res.status(StatusCodes.UNAUTHORIZED).json({ msg: "Email not confirmed" });
     }
