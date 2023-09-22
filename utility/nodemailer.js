@@ -14,19 +14,27 @@ class mail {
     });
   }
 
-  sendEmailVerfiction(target) {
-    const token = jwt.sign({ email: target }, process.env.JWT_SECRET_KEY, {
-      expiresIn: "1m",
-    });
-    const link = `http://localhost:5000/email/confirmation/${token}`;
+  sendAuthEmail({ redirectLink, authType, target }) {
+    let body;
+    let subject;
+    if (authType === "emailConfirmation") {
+      body = `<p>Press the link below to confirm your email.</p>
+      <span>Link: </span><a href=${redirectLink}>${redirectLink}</a>`;
+      subject = "Email confirmation";
+    } else if (authType === "passReset") {
+      body = `<p>Press the button below to reset your password.</p>
+      <a href=${redirectLink} style="text-decoration:none;background-color:#f7ca00;padding:15px;color:black;border-radius:5px;font-family: Verdana, Geneva, Tahoma, sans-serif;
+      display:inline-block;">Reset</a>`;
+      subject = "Reset password";
+    }
 
     const mailOptions = {
       from: this.user,
       to: target,
-      subject: "Email confirmation",
-      html: `<p>Press the link below to confirm your email.</p>
-      <span>Link: </span><a href=${link}>${link}</a>`,
+      subject,
+      html: body,
     };
+
     return new Promise((res, rej) => {
       this.transporter.sendMail(mailOptions, function (error, info) {
         if (error) {

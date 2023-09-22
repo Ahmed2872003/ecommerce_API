@@ -45,17 +45,16 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(helmet());
-app.use(cors({ origin: "http://localhost:3000" }));
+app.use(cors({ origin: "*" }));
 app.use(xss());
 
 app.use("/product", productRouter);
-app.use("/customer/auth", multer().none(), authRouter);
+app.use("/auth", multer().none(), authRouter);
 app.use("/review", reviewRouter);
-app.use("/email", emailRouter);
-app.use("/", auth);
-app.use("/customer", customerRouter);
-app.use("/cart", cartRouter);
-app.use("/order", orderRouter);
+app.use("/email", multer().none(), emailRouter);
+app.use("/customer", auth, customerRouter);
+app.use("/cart", auth, cartRouter);
+app.use("/order", auth, orderRouter);
 
 app.use(notFound);
 app.use(errorHandler);

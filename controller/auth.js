@@ -1,10 +1,12 @@
+// Models
 const Customer = require("../model/customer.js");
 
+// Modules
 const { StatusCodes } = require("http-status-codes");
-
-const customAPIError = require("../errors/custom.js");
-
 const bcrypt = require("bcrypt");
+// Errors
+const BadRequest = require("../errors/badRequest.js");
+const CustomApiError = require("../errors/custom.js");
 
 const signup = async (req, res, next) => {
   const customer = await Customer.create(req.body);
@@ -41,5 +43,21 @@ const login = async (req, res, next) => {
     res.status(StatusCodes.BAD_REQUEST).json({ msg: "Wrong password" });
   }
 };
+
+// const resetPass = async (req, res, next) => {
+//   const { password, email } = req.body;
+
+//   const { token } = req.params;
+
+//   if (!password || !email)
+//     throw new BadRequest("Must provide both email and new password");
+
+//   const customer = await Customer.findOne({ email });
+
+//   if (!customer)
+//     throw new CustomApiError("This email doesn't exist", StatusCodes.NOT_FOUND);
+
+//   await customer.update({ password });
+// };
 
 module.exports = { signup, login };
