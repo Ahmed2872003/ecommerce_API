@@ -121,7 +121,6 @@ const Customer = sequelize.define(
 
 // hash password
 Customer.hashPassIfChanged = async (customer) => {
-  console.log(customer.changed("password"));
   if (customer.changed("password")) {
     const salt = await bcrypt.genSalt();
     const hashedPass = await bcrypt.hash(customer.get("password"), salt);
@@ -147,7 +146,7 @@ Customer.createJWT = (customer) =>
     },
     process.env.JWT_SECRET_KEY,
     {
-      expiresIn: "30d",
+      expiresIn: "1w",
     }
   );
 

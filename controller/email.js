@@ -33,7 +33,7 @@ const sendEmailConf = async (req, res, next) => {
   const token = jwt.sign({ email }, process.env.JWT_SECRET_KEY_EMAILCONF, {
     expiresIn: "10m",
   });
-  const redirectLink = `${process.env.BASE_SERVER_URL}/email/confirmation/${token}`;
+  const redirectLink = `${process.env.BASE_SERVER_URL}/auth/confirm/email/${token}`;
 
   await mail.sendAuthEmail({
     redirectLink,
@@ -42,25 +42,6 @@ const sendEmailConf = async (req, res, next) => {
   });
 
   res.status(StatusCodes.OK).json({ msg: "Email sent successfully." });
-};
-
-const confEmail = async (req, res, next) => {
-  const { token } = req.params;
-
-  let payload;
-  try {
-    payload = jwt.verify(token, process.env.JWT_SECRET_KEY_EMAILCONF);
-  } catch (err) {
-    res
-      .status(StatusCodes.GONE)
-      .send("<h1>This link is expired. Try to resent it</h1>");
-  }
-
-  const customer = await Customer.update(
-    { confirmed: true },
-    { where: { email: payload.email } }
-  );
-  res.redirect(process.env.BASE_CLIENT_URL + "/auth/login");
 };
 
 const sendPassReset = async (req, res, next) => {
@@ -88,28 +69,4 @@ const sendPassReset = async (req, res, next) => {
   res.status(StatusCodes.OK).json({ msg: "Email sent successfully." });
 };
 
-const resetPass = async (req, res, next) => {
-  const { password } = req.body;
-  const { token } = req.params;
-
-  if (!password) throw new BadRequestError("Provide a password");
-
-  let payload;
-
-  try {
-    payload = jwt.verify(token, process.env.JWT_SECRET_KEY_PASSRESET);
-  } catch (err) {
-    res
-      .status(StatusCodes.GONE)
-      .json({ msg: "Link is expired. try to resend it" });
-  }
-  const customer = await Customer.findOne({ where: { email: payload.email } });
-
-  await customer.update({ password });
-
-  res
-    .status(StatusCodes.OK)
-    .json({ msg: "Password has been updated successfully" });
-};
-
-module.exports = { sendEmailConf, confEmail, sendPassReset, resetPass };
+module.exports = { sendEmailConf, sendPassReset };

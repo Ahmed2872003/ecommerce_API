@@ -5,22 +5,22 @@ const CustomAPIError = require("../errors/custom");
 const JWT = require("jsonwebtoken");
 
 const authorization = async (req, res, next) => {
-  const { authorization } = req.headers;
+  const { token } = req.cookies;
 
-  if (!authorization || !authorization.startsWith("Bearer "))
+  if (!token)
     throw new CustomAPIError(
       "You aren't allowed to get that resource",
       StatusCodes.UNAUTHORIZED
     );
 
   try {
-    const token = authorization.split(" ")[1];
-
     const payload = JWT.verify(token, process.env.JWT_SECRET_KEY);
 
     req.customer = { id: payload.id, seller: payload.seller };
+
     next();
   } catch (err) {
+    console.log(err.message);
     throw new CustomAPIError(
       "You aren't allowed to get that resource",
       StatusCodes.UNAUTHORIZED

@@ -1,14 +1,12 @@
-require("express-async-errors");
-
-require("dotenv").config();
-
-const express = require("express");
-
-const app = express();
-
-const multer = require("multer");
-
 const port = process.env.PORT || 5000;
+
+// Modules(3rd party)
+require("express-async-errors");
+require("dotenv").config();
+const express = require("express");
+const app = express();
+const multer = require("multer");
+const cookieParser = require("cookie-parser");
 
 // db connection
 const sequelize = require("./DB/connect");
@@ -42,10 +40,11 @@ app.use(
   })
 );
 // middlewares
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(helmet());
-app.use(cors({ origin: "*" }));
+app.use(cors({ origin: true, credentials: true }));
 app.use(xss());
 
 app.use("/product", productRouter);

@@ -1,10 +1,6 @@
 const router = require("express").Router();
 
-const {
-  updateCustomer,
-  getCustomer,
-  sendEmailConf,
-} = require("../controller/customer.js");
+const { updateCustomer, getCustomer } = require("../controller/customer.js");
 
 router.patch("/", updateCustomer);
 

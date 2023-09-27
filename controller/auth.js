@@ -4,6 +4,7 @@ const Customer = require("../model/customer.js");
 // Modules
 const { StatusCodes } = require("http-status-codes");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 // Errors
 const BadRequest = require("../errors/badRequest.js");
 const CustomApiError = require("../errors/custom.js");
@@ -18,14 +19,14 @@ const login = async (req, res, next) => {
   const { email, password } = req.body;
 
   if (!email || !password)
-    throw new customAPIError(
+    throw new CustomApiError(
       "Must provide both email and password",
       StatusCodes.BAD_REQUEST
     );
   let customer = await Customer.findOne({ where: { email } });
 
   if (!customer)
-    throw new customAPIError(
+    throw new CustomApiError(
       "This email doesn't exist",
       StatusCodes.UNAUTHORIZED
     );
@@ -33,9 +34,22 @@ const login = async (req, res, next) => {
   if (await bcrypt.compare(password, customer.password)) {
     if (customer.getDataValue("confirmed")) {
       const token = Customer.createJWT(customer);
+
+      customer = customer.toJSON();
+
+      delete customer.password;
+
       res
-        .status(StatusCodes.OK)
-        .json({ data: { token, name: customer.get("full_name") } });
+        .cookie("token", token, {
+          httpOnly: true,
+          secure: true,
+          expires: new Date(Date.now() + 1 * 7 * 24 * 60 * 60 * 1000), // Last for 1 week
+        })
+        .cookie("user", JSON.stringify(customer), {
+          secure: true,
+          expires: new Date(Date.now() + 1 * 7 * 24 * 60 * 60 * 1000),
+        })
+        .sendStatus(StatusCodes.OK);
     } else {
       res.status(StatusCodes.UNAUTHORIZED).json({ msg: "Email not confirmed" });
     }
@@ -44,20 +58,47 @@ const login = async (req, res, next) => {
   }
 };
 
-// const resetPass = async (req, res, next) => {
-//   const { password, email } = req.body;
+const resetPass = async (req, res, next) => {
+  const { password } = req.body;
+  const { token } = req.params;
 
-//   const { token } = req.params;
+  if (!password) throw new BadRequest("Provide a password");
 
-//   if (!password || !email)
-//     throw new BadRequest("Must provide both email and new password");
+  let payload;
 
-//   const customer = await Customer.findOne({ email });
+  try {
+    payload = jwt.verify(token, process.env.JWT_SECRET_KEY_PASSRESET);
+  } catch (err) {
+    res
+      .status(StatusCodes.GONE)
+      .json({ msg: "Link is expired. try to resend it" });
+  }
+  const customer = await Customer.findOne({ where: { email: payload.email } });
 
-//   if (!customer)
-//     throw new CustomApiError("This email doesn't exist", StatusCodes.NOT_FOUND);
+  await customer.update({ password });
 
-//   await customer.update({ password });
-// };
+  res
+    .status(StatusCodes.OK)
+    .json({ msg: "Password has been updated successfully" });
+};
 
-module.exports = { signup, login };
+const confEmail = async (req, res, next) => {
+  const { token } = req.params;
+
+  let payload;
+  try {
+    payload = jwt.verify(token, process.env.JWT_SECRET_KEY_EMAILCONF);
+  } catch (err) {
+    res
+      .status(StatusCodes.GONE)
+      .send("<h1>This link is expired. Try to resent it</h1>");
+  }
+
+  const customer = await Customer.update(
+    { confirmed: true },
+    { where: { email: payload.email } }
+  );
+  res.redirect(process.env.BASE_CLIENT_URL + "/auth/login");
+};
+
+module.exports = { signup, login, resetPass, confEmail };

@@ -36,12 +36,9 @@ const updateCustomer = async (req, res, next) => {
 
 const getCustomer = async (req, res, next) => {
   const { id: customerID } = req.customer;
-  const customer = await Customer.findByPk(customerID, {
+  let customer = await Customer.findByPk(customerID, {
     attributes: {
-      exclude: ["password", "first_name", "last_name"],
-      include: [
-        [fn("concat", col("first_name"), " ", col("last_name")), "full_name"],
-      ],
+      exclude: ["password"],
     },
   });
 
@@ -51,7 +48,14 @@ const getCustomer = async (req, res, next) => {
       StatusCodes.NOT_FOUND
     );
 
-  res.status(200).json({ data: customer });
+  res.status(200).json({
+    data: {
+      customer: {
+        ...customer.dataValues,
+        full_name: customer.get("full_name"),
+      },
+    },
+  });
 };
 
 module.exports = { updateCustomer, getCustomer };
