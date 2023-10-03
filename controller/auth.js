@@ -58,6 +58,10 @@ const login = async (req, res, next) => {
   }
 };
 
+const logout = async (req, res, next) => {
+  res.clearCookie("token").clearCookie("user").sendStatus(StatusCodes.OK);
+};
+
 const resetPass = async (req, res, next) => {
   const { password } = req.body;
   const { token } = req.params;
@@ -101,4 +105,4 @@ const confEmail = async (req, res, next) => {
   res.redirect(process.env.BASE_CLIENT_URL + "/auth/login");
 };
 
-module.exports = { signup, login, resetPass, confEmail };
+module.exports = { signup, login, logout, resetPass, confEmail };
