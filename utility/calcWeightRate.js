@@ -8,6 +8,7 @@ const calcWeightRate = async (rateTable) => {
     numerator += rating * weight;
     totalWeight += weight;
   }
+
   comulativeRate = numerator / (totalWeight || 1);
 
   return comulativeRate.toFixed(1);

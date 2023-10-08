@@ -1,10 +1,11 @@
-const { Op, col } = require("sequelize");
+const { Op, col, fn, literal } = require("sequelize");
 
 // Models
 const Category = require("../model/category.js");
 const Product = require("../model/product.js");
 const CartItem = require("../model/cart_items.js");
 const Cart = require("../model/cart.js");
+const Review = require("../model/review.js");
 
 const { StatusCodes } = require("http-status-codes");
 
@@ -35,13 +36,21 @@ const getAllProducts = async (req, res, next) => {
         "SellerId",
         "images",
       ],
-      include: [[col("Category.name"), "category"]],
+      include: [
+        [col("Category.name"), "category"],
+        [fn("COUNT", col("Reviews.id")), "reviewsCount"],
+      ],
     },
-    include: {
-      model: Category,
-      attributes: [],
-      required: true,
-    },
+    include: [
+      {
+        model: Review,
+        attributes: [],
+      },
+      { model: Category, attributes: [], required: true },
+    ],
+    group: ["id"],
+    subQuery: false,
+
     where: {
       [Op.and]: filters,
     },
@@ -50,6 +59,9 @@ const getAllProducts = async (req, res, next) => {
       ["createdAt", "DESC"],
       ["id", "ASC"],
     ],
+
+    subQuery: false,
+
     limit: +limit || undefined,
     offset,
   });

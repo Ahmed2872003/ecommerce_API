@@ -51,7 +51,8 @@ const Product = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
       get() {
-        return this.getDataValue("images").split(";");
+        if (this.getDataValue("images"))
+          return this.getDataValue("images").split(";");
       },
       set(val) {
         this.setDataValue("images", val.join(";"));
