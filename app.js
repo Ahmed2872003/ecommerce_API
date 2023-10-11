@@ -62,7 +62,7 @@ app.use(errorHandler);
   try {
     await sequelize.authenticate();
     app.listen(port, () => console.log(`API is listening on port ${port}`));
-    // require("./addProducts.js");
+    // require("./addProduc ts.js");
   } catch (err) {
     console.log(err.message);
   }

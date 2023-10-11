@@ -73,18 +73,29 @@ const getProduct = async (req, res, next) => {
   const { id } = req.params;
 
   const product = await Product.findOne({
+    raw: true,
     attributes: {
       exclude: ["CategoryId"],
-      include: [[col("Category.name"), "category"]],
+      include: [
+        [col("Category.name"), "category"],
+        [fn("COUNT", col("Reviews.id")), "reviewsCount"],
+      ],
     },
     where: {
       id: { [Op.eq]: id },
     },
-    include: {
-      model: Category,
-      attributes: [],
-      required: true,
-    },
+    include: [
+      {
+        model: Category,
+        attributes: [],
+        required: true,
+      },
+      {
+        model: Review,
+        attributes: [],
+      },
+    ],
+    subQuery: false,
   });
 
   if (!product) {
