@@ -15,7 +15,8 @@
       "https://example.com"
     ],
     "brand": "iPhone",
-    "currency": "USD"
+    "currency": "USD",
+    "SellerId": 1
   },
   {
     "id": 2,
@@ -33,7 +34,8 @@
       "https://example.com"
     ],
     "brand": "Samsung",
-    "currency": "USD"
+    "currency": "USD",
+    "SellerId": 1
   },
   {
     "id": 3,
@@ -51,7 +53,8 @@
       "https://example.com"
     ],
     "brand": "Sony",
-    "currency": "USD"
+    "currency": "USD",
+    "SellerId": 1
   },
   {
     "id": 4,
@@ -69,7 +72,8 @@
       "https://example.com"
     ],
     "brand": "Microsoft",
-    "currency": "USD"
+    "currency": "USD",
+    "SellerId": 1
   },
   {
     "id": 5,
@@ -87,7 +91,8 @@
       "https://example.com"
     ],
     "brand": "Apple",
-    "currency": "USD"
+    "currency": "USD",
+    "SellerId": 1
   },
   {
     "id": 6,
@@ -105,7 +110,8 @@
       "https://example.com"
     ],
     "brand": "Dell",
-    "currency": "USD"
+    "currency": "USD",
+    "SellerId": 1
   },
   {
     "id": 7,
@@ -123,7 +129,8 @@
       "https://example.com"
     ],
     "brand": "Samsung",
-    "currency": "USD"
+    "currency": "USD",
+    "SellerId": 1
   },
   {
     "id": 8,
@@ -141,7 +148,8 @@
       "https://example.com"
     ],
     "brand": "LG",
-    "currency": "USD"
+    "currency": "USD",
+    "SellerId": 1
   },
   {
     "id": 9,
@@ -159,7 +167,8 @@
       "https://example.com"
     ],
     "brand": "Bose",
-    "currency": "USD"
+    "currency": "USD",
+    "SellerId": 1
   },
   {
     "id": 10,
@@ -177,7 +186,8 @@
       "https://example.com"
     ],
     "brand": "Sony",
-    "currency": "USD"
+    "currency": "USD",
+    "SellerId": 1
   },
   {
     "id": 11,
@@ -195,7 +205,8 @@
       "https://example.com"
     ],
     "brand": "Fitbit",
-    "currency": "USD"
+    "currency": "USD",
+    "SellerId": 1
   },
   {
     "id": 12,
@@ -213,7 +224,8 @@
       "https://example.com"
     ],
     "brand": "Garmin",
-    "currency": "USD"
+    "currency": "USD",
+    "SellerId": 1
   },
   {
     "id": 13,
@@ -231,7 +243,8 @@
       "https://example.com"
     ],
     "brand": "Canon",
-    "currency": "USD"
+    "currency": "USD",
+    "SellerId": 1
   },
   {
     "id": 14,
@@ -249,7 +262,8 @@
       "https://example.com"
     ],
     "brand": "Sony",
-    "currency": "USD"
+    "currency": "USD",
+    "SellerId": 1
   },
   {
     "id": 15,
@@ -267,7 +281,8 @@
       "https://example.com"
     ],
     "brand": "Nikon",
-    "currency": "USD"
+    "currency": "USD",
+    "SellerId": 1
   },
   {
     "id": 16,
@@ -285,7 +300,8 @@
       "https://example.com"
     ],
     "brand": "Google",
-    "currency": "USD"
+    "currency": "USD",
+    "SellerId": 1
   },
   {
     "id": 17,
@@ -303,7 +319,8 @@
       "https://example.com"
     ],
     "brand": "Amazon",
-    "currency": "USD"
+    "currency": "USD",
+    "SellerId": 1
   },
   {
     "id": 18,
@@ -321,7 +338,8 @@
       "https://example.com"
     ],
     "brand": "iRobot",
-    "currency": "USD"
+    "currency": "USD",
+    "SellerId": 1
   },
   {
     "id": 19,
@@ -339,7 +357,8 @@
       "https://example.com"
     ],
     "brand": "Dyson",
-    "currency": "USD"
+    "currency": "USD",
+    "SellerId": 1
   },
   {
     "id": 20,
@@ -357,6 +376,7 @@
       "https://example.com"
     ],
     "brand": "Instant",
-    "currency": "USD"
+    "currency": "USD",
+    "SellerId": 1
   }
 ]

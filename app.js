@@ -3,8 +3,12 @@ const port = process.env.PORT || 5000;
 // Modules(3rd party)
 require("express-async-errors");
 require("dotenv").config();
+
+const http = require("http");
+let server = http.createServer();
+
 const express = require("express");
-const app = express();
+const app = express(server);
 const multer = require("multer");
 const cookieParser = require("cookie-parser");
 
@@ -58,12 +62,23 @@ app.use("/order", auth, orderRouter);
 app.use(notFound);
 app.use(errorHandler);
 
+// Listen for process termination signals
+process.on("SIGINT", async () => {
+  server.close(() => {
+    process.exit(0);
+  });
+});
+
+server.on("close", () => sequelize.close());
+
 (async () => {
   try {
     await sequelize.authenticate();
+
     app.listen(port, () => console.log(`API is listening on port ${port}`));
-    // require("./addProduc ts.js");
+    // require("./addProducts.js");
   } catch (err) {
     console.log(err.message);
+    server.close();
   }
 })();
