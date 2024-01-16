@@ -6,6 +6,7 @@ const Product = require("../model/product.js");
 const CartItem = require("../model/cart_items.js");
 const Cart = require("../model/cart.js");
 const Review = require("../model/review.js");
+const Customer = require("../model/customer.js");
 
 const { StatusCodes } = require("http-status-codes");
 
@@ -73,9 +74,8 @@ const getProduct = async (req, res, next) => {
   const { id } = req.params;
 
   const product = await Product.findOne({
-    raw: true,
     attributes: {
-      exclude: ["CategoryId"],
+      exclude: ["CategoryId", "SellerId"],
       include: [
         [col("Category.name"), "category"],
         [fn("COUNT", col("Reviews.id")), "reviewsCount"],
@@ -94,6 +94,11 @@ const getProduct = async (req, res, next) => {
         model: Review,
         attributes: [],
       },
+      {
+        model: Customer,
+        as: "Seller",
+        attributes: ["id", "first_name", "email"],
+      },
     ],
     subQuery: false,
   });
@@ -105,7 +110,11 @@ const getProduct = async (req, res, next) => {
     return;
   }
 
-  res.status(200).json({ data: { product } });
+  res.status(200).json({
+    data: {
+      product,
+    },
+  });
 };
 
 const createProduct = async (req, res, next) => {
