@@ -3,20 +3,19 @@ const { Op, Sequelize } = require("sequelize");
 const userToSeqFilter = (filter) => {
   let res = [];
 
-  const {
-    name,
-    minPrice,
-    maxPrice,
-    minRating,
-    maxRating,
-    category,
-    sellerId,
-    currency,
-  } = filter;
+  const { minPrice, maxPrice, minRating, maxRating, sellerId } = filter;
 
-  if (name) res.push({ name: { [Op.like]: `%${name}%` } });
+  likeRegExp = /name|category|currency|brand/i;
 
-  if (category) res.push({ "$Category.name$": { [Op.like]: `%${category}%` } });
+  for (const key in filter) {
+    let sequelizeKey = null;
+    if (likeRegExp.test(key)) {
+      if (key === "category") sequelizeKey = "$Category.name$";
+      else sequelizeKey = key;
+
+      res.push({ [sequelizeKey]: { [Op.like]: `%${filter[key]}%` } });
+    }
+  }
 
   if (minPrice && maxPrice)
     res.push({ price: { [Op.between]: [minPrice, maxPrice] } });
@@ -33,8 +32,6 @@ const userToSeqFilter = (filter) => {
   }
 
   if (sellerId) res.push({ SellerId: sellerId });
-
-  if (currency) res.push({ currency: { [Op.like]: `%${currency}%` } });
 
   return res;
 };
