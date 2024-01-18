@@ -24,7 +24,11 @@ const getAllProducts = async (req, res, next) => {
   const filters = userToSeqFilter(req.originalUrl.split("?")[1]);
 
   const { page = 1, limit = 0 } = req.query;
-  const offset = (+page - 1) * +limit;
+  let { offset } = req.query;
+
+  offset = +offset || (+page - 1) * +limit;
+
+  console.log(req.query);
 
   const products = await Product.findAll({
     raw: true,

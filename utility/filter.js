@@ -29,12 +29,13 @@ const userToSeqFilter = (filter) => {
   filter.forEach((element) => {
     let [key, op, val] = element.split(" ");
 
+    if (key === "limit" || key === "page" || key === "offset") return;
+
     if (key === "category") key = "$Category.name$";
 
     if (op === "like=" || op === "nlike=") val = "%" + val + "%";
 
-    if (key !== "limit" && key !== "page")
-      res.push({ [key]: { [seqOperator[op]]: val } });
+    res.push({ [key]: { [seqOperator[op]]: val } });
   });
 
   return res;
