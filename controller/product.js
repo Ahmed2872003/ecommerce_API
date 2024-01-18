@@ -21,7 +21,7 @@ const cloudinary = require("../utility/cloudinary.js");
 
 const getAllProducts = async (req, res, next) => {
   // Converting user filter to sequelize filter
-  const filters = userToSeqFilter(req.query);
+  const filters = userToSeqFilter(req.originalUrl.split("?")[1]);
 
   const { page = 1, limit = 0 } = req.query;
   const offset = (+page - 1) * +limit;
@@ -47,10 +47,13 @@ const getAllProducts = async (req, res, next) => {
         model: Review,
         attributes: [],
       },
-      { model: Category, attributes: [], required: true },
+      {
+        model: Category,
+        attributes: [],
+        required: true,
+      },
     ],
     group: ["id"],
-    subQuery: false,
 
     where: {
       [Op.and]: filters,

@@ -3,37 +3,57 @@ const { Op, Sequelize } = require("sequelize");
 const userToSeqFilter = (filter) => {
   let res = [];
 
-  const { minPrice, maxPrice, minRating, maxRating, sellerId } = filter;
+  if (!filter) return res;
 
-  likeRegExp = /name|category|currency|brand/i;
+  const seqOperator = {
+    "=": Op.eq,
+    "!=": Op.ne,
+    ">": Op.gt,
+    ">=": Op.gte,
+    "<": Op.lt,
+    "<=": Op.lte,
+    "like=": Op.like,
+    "nlike=": Op.notLike,
+  };
 
-  for (const key in filter) {
-    let sequelizeKey = null;
-    if (likeRegExp.test(key)) {
-      if (key === "category") sequelizeKey = "$Category.name$";
-      else sequelizeKey = key;
+  const filterRegExp = /(like|nlike)*=|!=|(>|<)=*/g;
 
-      res.push({ [sequelizeKey]: { [Op.like]: `%${filter[key]}%` } });
-    }
-  }
+  filter = filter.replaceAll(/%3E|%3C/g, (match) =>
+    match === "%3E" ? ">" : "<"
+  );
 
-  if (minPrice && maxPrice)
-    res.push({ price: { [Op.between]: [minPrice, maxPrice] } });
-  else {
-    if (minPrice) res.push({ price: { [Op.gte]: minPrice } });
-    if (maxPrice) res.push({ price: { [Op.lte]: maxPrice } });
-  }
+  filter = filter
+    .replaceAll(filterRegExp, (match) => " " + match + " ")
+    .split("&");
 
-  if (minRating && maxRating)
-    res.push({ rating: { [Op.between]: [minRating, maxRating] } });
-  else {
-    if (minRating) res.push({ rating: { [Op.gte]: minRating } });
-    if (maxRating) res.push({ rating: { [Op.lte]: maxRating } });
-  }
+  filter.forEach((element) => {
+    let [key, op, val] = element.split(" ");
 
-  if (sellerId) res.push({ SellerId: sellerId });
+    if (key === "category") key = "$Category.name$";
+
+    if (op === "like=" || op === "nlike=") val = "%" + val + "%";
+
+    if (key !== "limit" && key !== "page")
+      res.push({ [key]: { [seqOperator[op]]: val } });
+  });
 
   return res;
 };
+
+// if (minPrice && maxPrice)
+//   res.push({ price: { [Op.between]: [minPrice, maxPrice] } });
+// else {
+//   if (minPrice) res.push({ price: { [Op.gte]: minPrice } });
+//   if (maxPrice) res.push({ price: { [Op.lte]: maxPrice } });
+// }
+
+// if (minRating && maxRating)
+//   res.push({ rating: { [Op.between]: [minRating, maxRating] } });
+// else {
+//   if (minRating) res.push({ rating: { [Op.gte]: minRating } });
+//   if (maxRating) res.push({ rating: { [Op.lte]: maxRating } });
+// }
+
+// if (sellerId) res.push({ SellerId: sellerId });
 
 module.exports = userToSeqFilter;
