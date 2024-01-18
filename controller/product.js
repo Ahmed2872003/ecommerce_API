@@ -28,8 +28,6 @@ const getAllProducts = async (req, res, next) => {
 
   offset = +offset || (+page - 1) * +limit;
 
-  console.log(req.query);
-
   const products = await Product.findAll({
     raw: true,
     attributes: {
