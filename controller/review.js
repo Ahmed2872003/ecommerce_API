@@ -3,17 +3,16 @@ const Review = require("../model/review.js");
 const Product = require("../model/product.js");
 const Customer = require("../model/customer.js");
 
-const { Sequelize, fn, col } = require("sequelize");
+const { Sequelize, fn, col, Op } = require("sequelize");
 const { StatusCodes } = require("http-status-codes");
 
 // utility
 const calcWeightRate = require("../utility/calcWeightRate");
-
 const getReviewsTableFor = require("../utility/getReviewsTableFor");
+const userToSeqFilter = require("../utility/filter.js");
 
 // Errors
 const notFound = require("../errors/notFound.js");
-const customAPIError = require("../errors/custom.js");
 const CustomApiError = require("../errors/custom.js");
 
 const createReview = async (req, res, next) => {
@@ -33,7 +32,11 @@ const createReview = async (req, res, next) => {
 };
 
 const getReviews = async (req, res, next) => {
-  const { productId } = req.body;
+  const { page = 1, limit = 0 } = req.query;
+
+  offset = (+page - 1) * +limit;
+
+  const filters = userToSeqFilter(req.originalUrl.split("?")[1]);
 
   const reviews = await Review.findAll({
     raw: true,
@@ -42,9 +45,9 @@ const getReviews = async (req, res, next) => {
         [
           fn(
             "concat",
-            col("customer.first_name"),
+            col("Customer.first_name"),
             " ",
-            col("customer.last_name")
+            col("Customer.last_name")
           ),
           "customerName",
         ],
@@ -59,9 +62,11 @@ const getReviews = async (req, res, next) => {
     },
 
     where: {
-      productId,
+      [Op.and]: filters,
     },
     order: [["rating", "DESC"]],
+    limit: +limit || undefined,
+    offset,
   });
 
   res
