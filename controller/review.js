@@ -16,6 +16,19 @@ const notFound = require("../errors/notFound.js");
 const CustomApiError = require("../errors/custom.js");
 
 const createReview = async (req, res, next) => {
+  if (req.customer.seller) {
+    const product = await Product.findOne({
+      where: { id: req.body.ProductId, SellerId: req.customer.id },
+    });
+
+    if (product) {
+      res
+        .status(StatusCodes.UNAUTHORIZED)
+        .json({ msg: "Seller can not create a comment in his products" });
+      return;
+    }
+  }
+
   await Review.create({ ...req.body, CustomerId: req.customer.id });
 
   res.sendStatus(StatusCodes.CREATED);

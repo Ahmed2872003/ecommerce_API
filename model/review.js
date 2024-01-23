@@ -24,7 +24,7 @@ const Review = sequelize.define(
       type: DataTypes.FLOAT,
       allowNull: false,
       validate: {
-        min: 1,
+        min: 0.5,
         max: 5,
       },
     },
