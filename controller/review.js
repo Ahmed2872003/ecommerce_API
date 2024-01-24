@@ -77,7 +77,10 @@ const getReviews = async (req, res, next) => {
     where: {
       [Op.and]: filters,
     },
-    order: [["rating", "DESC"]],
+    order: [
+      ["rating", "DESC"],
+      ["createdAt", "DESC"],
+    ],
     limit: +limit || undefined,
     offset,
   });
