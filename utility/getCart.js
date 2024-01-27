@@ -17,6 +17,7 @@ const getCart = async (CustomerId) =>
         "id",
         "name",
         "price",
+        "image",
         [literal("`Products->CartItem`.`quantity`"), "quantity"],
       ],
       through: { model: CartItem, attributes: [] },
