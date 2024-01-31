@@ -105,8 +105,6 @@ const updateReview = async (req, res, next) => {
 
   await review.update(req.body);
 
-  res.sendStatus(StatusCodes.OK);
-
   // Adding the ratting to the product
   if (req.body.rating) {
     const productRatingTable = await getReviewsTableFor(
@@ -120,6 +118,8 @@ const updateReview = async (req, res, next) => {
       { where: { id: review.getDataValue("ProductId") } }
     );
   }
+
+  res.sendStatus(StatusCodes.OK);
 };
 
 const deleteReview = async (req, res, next) => {

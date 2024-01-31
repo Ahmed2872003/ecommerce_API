@@ -52,15 +52,16 @@ const updateCartItem = async (req, res, next) => {
 };
 
 const deleteCartItem = async (req, res, next) => {
-  const { productId: ProductId } = req.body;
+  const { productId: ProductId } = req.params;
 
   const {
     cart: { id: CartId },
+    newSubtotal,
   } = await updateSubtotal(req.customer.id, ProductId, 0);
 
   await CartItem.destroy({ where: { CartId, ProductId } });
 
-  res.sendStatus(StatusCodes.OK);
+  res.status(StatusCodes.OK).json({ data: { subtotal: newSubtotal } });
 };
 
 module.exports = { addCartItem, updateCartItem, deleteCartItem };

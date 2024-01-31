@@ -15,6 +15,8 @@ const CustomApiError = require("../errors/custom.js");
 const { StatusCodes } = require("http-status-codes");
 
 const { col, literal } = require("sequelize");
+const { log } = require("util");
+const CartItem = require("../model/cart_items.js");
 
 const createOrder = async (req, res, next) => {
   const cart = await Cart.findOne({
@@ -72,8 +74,10 @@ const confirmOrder = async (req, res, next) => {
   await order.update({ status: true });
 
   for (const product of order.getDataValue("Products")) {
-    const { quantity, orderedQuantity } = product.dataValues;
+    const { quantity, orderedQuantity, id } = product.dataValues;
     await product.update({ quantity: quantity - orderedQuantity });
+    if (quantity - orderedQuantity === 0)
+      await CartItem.destroy({ where: { ProductId: id } });
   }
 
   res.sendStatus(200);

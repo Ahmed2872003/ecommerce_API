@@ -51,7 +51,9 @@ const login = async (req, res, next) => {
         })
         .sendStatus(StatusCodes.OK);
     } else {
-      res.status(StatusCodes.UNAUTHORIZED).json({ msg: "Email not confirmed" });
+      res
+        .status(StatusCodes.UNAUTHORIZED)
+        .json({ msg: "Email is not confirmed" });
     }
   } else {
     res.status(StatusCodes.BAD_REQUEST).json({ msg: "Wrong password" });

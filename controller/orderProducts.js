@@ -26,8 +26,6 @@ const createOrderProducts = async (req, res, next) => {
 
   await orderProduct.bulkCreate(cartItems);
 
-  await Cart.destroy({ where: { id: req.cartId } });
-
   res.sendStatus(200);
 };
 
@@ -41,9 +39,9 @@ const getOrderProducts = async (req, res, next) => {
         "id",
         "name",
         "price",
-        "image_url",
+        "image",
         "currency",
-        [literal("`Products->orderProduct`.`quantity`"), "quantity"],
+        [literal("`Poroducts->orderPrduct`.`quantity`"), "quantity"],
       ],
       through: { model: orderProduct, attributes: [] },
     },
