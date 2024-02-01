@@ -6,8 +6,11 @@ const {
   getOrderProducts,
 } = require("../controller/orderProducts.js");
 
-router.route("/").post(createOrder, createOrderProducts).get(getOrderProducts);
+const { deleteCart } = require("../controller/cart.js");
 
-router.post("/confirm", confirmOrder);
+router
+  .route("/")
+  .post(createOrder, createOrderProducts, deleteCart)
+  .get(getOrderProducts);
 
 module.exports = router;

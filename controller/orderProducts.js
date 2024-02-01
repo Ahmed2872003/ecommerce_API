@@ -26,7 +26,7 @@ const createOrderProducts = async (req, res, next) => {
 
   await orderProduct.bulkCreate(cartItems);
 
-  res.sendStatus(200);
+  next();
 };
 
 const getOrderProducts = async (req, res, next) => {

@@ -8,7 +8,9 @@ const Product = require("../model/product.js");
 const NotFoundError = require("../errors/notFound.js");
 const BadRequestError = require("../errors/badRequest.js");
 
+// Utils
 const updateSubtotal = require("../utility/updateSubtotal.js");
+const findCart = require("../utility/getCart");
 
 const { col } = require("sequelize");
 
@@ -48,7 +50,9 @@ const updateCartItem = async (req, res, next) => {
 
   await CartItem.update({ quantity }, { where: { ProductId, CartId: id } });
 
-  res.status(StatusCodes.OK).json({ data: { subtotal } });
+  const cart = await findCart(req.customer.id);
+
+  res.status(StatusCodes.OK).json({ data: { cart } });
 };
 
 const deleteCartItem = async (req, res, next) => {

@@ -34,6 +34,7 @@ const reviewRouter = require("./routes/review.js");
 const cartRouter = require("./routes/cart.js");
 const orderRouter = require("./routes/order.js");
 const emailRouter = require("./routes/email.js");
+const stripeRouter = require("./routes/stripe.js");
 // authorization
 const auth = require("./middleware/authorization.js");
 
@@ -44,9 +45,9 @@ app.use(
   })
 );
 // middlewares
-app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
 app.use(helmet());
 app.use(cors({ origin: true, credentials: true }));
 app.use(xss());
@@ -58,6 +59,7 @@ app.use("/email", multer().none(), emailRouter);
 app.use("/customer", auth, customerRouter);
 app.use("/cart", auth, cartRouter);
 app.use("/order", auth, orderRouter);
+app.use("/stripe", stripeRouter);
 
 app.use(notFound);
 app.use(errorHandler);

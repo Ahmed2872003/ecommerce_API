@@ -14,10 +14,6 @@ const notFound = require("../errors/notFound.js");
 const CustomApiError = require("../errors/custom.js");
 const { StatusCodes } = require("http-status-codes");
 
-const { col, literal } = require("sequelize");
-const { log } = require("util");
-const CartItem = require("../model/cart_items.js");
-
 const createOrder = async (req, res, next) => {
   const cart = await Cart.findOne({
     where: { CustomerId: req.customer.id },
@@ -38,49 +34,4 @@ const createOrder = async (req, res, next) => {
   next();
 };
 
-const confirmOrder = async (req, res, next) => {
-  const { btoken, id } = req.body;
-
-  if (!btoken || !id)
-    throw new BadRequest("Must provide bank token and order id");
-
-  const order = await Order.findOne({
-    where: { id },
-    include: {
-      model: Product,
-      attributes: [
-        "id",
-        "quantity",
-        [literal("`Products->orderProduct`.`quantity`"), "orderedQuantity"],
-      ],
-      through: { model: orderProduct, attributes: [] },
-    },
-  });
-
-  if (!order) throw new notFound("order", id);
-
-  if (order.getDataValue("status"))
-    throw new CustomApiError(
-      "that order has been confirmed before.",
-      StatusCodes.CONFLICT
-    );
-
-  const payment = await stripe.charges.create({
-    amount: order.getDataValue("total_amount") * 100,
-    currency: "usd",
-    source: req.body["btoken"],
-  });
-
-  await order.update({ status: true });
-
-  for (const product of order.getDataValue("Products")) {
-    const { quantity, orderedQuantity, id } = product.dataValues;
-    await product.update({ quantity: quantity - orderedQuantity });
-    if (quantity - orderedQuantity === 0)
-      await CartItem.destroy({ where: { ProductId: id } });
-  }
-
-  res.sendStatus(200);
-};
-
-module.exports = { createOrder, confirmOrder };
+module.exports = { createOrder };
