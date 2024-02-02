@@ -8,9 +8,6 @@ const {
 
 const { deleteCart } = require("../controller/cart.js");
 
-router
-  .route("/")
-  .post(createOrder, createOrderProducts, deleteCart)
-  .get(getOrderProducts);
+router.route("/").get(getOrderProducts);
 
 module.exports = router;

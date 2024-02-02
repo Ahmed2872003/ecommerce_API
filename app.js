@@ -45,7 +45,16 @@ app.use(
   })
 );
 // middlewares
-app.use(express.json());
+app.use(
+  express.json({
+    verify: function (req, res, buf) {
+      var url = req.originalUrl;
+      if (url.startsWith("/stripe/webhook")) {
+        req.rawBody = buf.toString();
+      }
+    },
+  })
+);
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(helmet());

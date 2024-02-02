@@ -7,7 +7,7 @@ const Cart = require("../model/cart.js");
 
 const { literal, col } = require("sequelize");
 
-const createOrderProducts = async (req, res, next) => {
+const createOrderProducts = async (req) => {
   const cartItems = await CartItems.findAll({
     raw: true,
     attributes: {
@@ -25,8 +25,6 @@ const createOrderProducts = async (req, res, next) => {
   });
 
   await orderProduct.bulkCreate(cartItems);
-
-  next();
 };
 
 const getOrderProducts = async (req, res, next) => {

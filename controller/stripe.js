@@ -2,19 +2,22 @@
 const { StatusCodes } = require("http-status-codes");
 
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
-
-// utils
 const cld = require("../utility/cloudinary");
 
+// Errors
+const BadRequest = require("../errors/badRequest");
 // Utils
 const getCart = require("../utility/getCart");
+const {
+  handleStripeCheckoutCompleted,
+} = require("../utility/stripeEventsHandling/HandlingMethods");
 
 const createCheckoutSession = async (req, res, next) => {
   const { products } = req.body;
 
   const { buyNow } = req.query;
 
-  const cart = await getCart(req.customer.id);
+  if (!products) throw new BadRequest("should provide products details");
 
   const line_items = products.map((product) => {
     product.image = cld.url(product.image, { format: "jpg" });
@@ -81,9 +84,10 @@ const createCheckoutSession = async (req, res, next) => {
     ],
     line_items,
     mode: "payment",
-    customerId: req.customer.id,
-    cart: !Number.isNaN(+buyNow) && +buyNow ? cart : null,
-    success_url: process.env.BASE_CLIENT_URL,
+    metadata: {
+      customerId: req.customer.id,
+    },
+    success_url: process.env.BASE_CLIENT_URL + "/payment-status/success",
   });
 
   res.status(StatusCodes.OK).json({ data: { url: session.url } });
@@ -92,25 +96,23 @@ const createCheckoutSession = async (req, res, next) => {
 const listenToStripeEvents = async (req, res) => {
   const sig = req.headers["stripe-signature"];
 
-  console.log(req.body);
-
   let event;
 
   try {
     event = stripe.webhooks.constructEvent(
-      req.body,
+      req.rawBody,
       sig,
       process.env.STRIPE_ENDPOINT_SECRET
     );
+
+    // Handle the event
+    switch (event.type) {
+      case "checkout.session.completed":
+        await handleStripeCheckoutCompleted(req, res, event.data.object);
+        break;
+    }
   } catch (err) {
     console.log(err.message);
-  }
-
-  // Handle the event
-  switch (event.type) {
-    case "checkout.session.completed":
-      console.log(event.data.object);
-      break;
   }
 
   res.sendStatus(StatusCodes.OK);

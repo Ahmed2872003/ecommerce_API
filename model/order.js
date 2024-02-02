@@ -13,6 +13,21 @@ const Order = sequelize.define(
       primaryKey: true,
       autoIncrement: true,
     },
+    subtotal: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        min: 0,
+      },
+    },
+    shipping_amount: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        min: 0,
+      },
+      defaultValue: 0,
+    },
     total_amount: {
       type: DataTypes.INTEGER,
       allowNull: false,
