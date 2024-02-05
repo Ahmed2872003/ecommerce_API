@@ -2,8 +2,8 @@ const sequelize = require("../DB/connect.js");
 const { DataTypes, Model } = require("sequelize");
 
 // Models
-const Cutomer = require("../model/customer.js");
 const Customer = require("../model/customer.js");
+const Address = require("../model/address.js");
 
 const Order = sequelize.define(
   "Order",
@@ -46,6 +46,9 @@ const Order = sequelize.define(
 Order.belongsTo(Customer);
 Customer.hasMany(Order);
 
-Order.sync({ alter: true });
+Order.belongsTo(Address, { onDelete: "SET NULL", onUpdate: "CASCADE" });
+Address.hasMany(Order);
+
+Order.sync();
 
 module.exports = Order;

@@ -4,6 +4,7 @@ const Order = require("../model/order.js");
 const CartItems = require("../model/cart_items.js");
 const Product = require("../model/product.js");
 const Cart = require("../model/cart.js");
+const Address = require("../model/address.js");
 
 const { literal, col } = require("sequelize");
 
@@ -29,21 +30,31 @@ const createOrderProducts = async (req) => {
 
 const getOrderProducts = async (req, res, next) => {
   const orderProdcuts = await Order.findAll({
-    attributes: { exclude: ["CustomerId"] },
+    attributes: { exclude: ["CustomerId", "AddressId"] },
     where: { CustomerId: req.customer.id },
-    include: {
-      model: Product,
-      attributes: [
-        "id",
-        "name",
-        "price",
-        "image",
-        "currency",
-        [literal("`Poroducts->orderPrduct`.`quantity`"), "quantity"],
-      ],
-      through: { model: orderProduct, attributes: [] },
-    },
+    include: [
+      {
+        model: Address,
+        attributes: {
+          exclude: ["id", "createdAt", "updatedAt"],
+        },
+      },
+
+      {
+        model: Product,
+        attributes: [
+          "id",
+          "name",
+          "price",
+          "image",
+          "currency",
+          [literal("`Products->orderProduct`.`quantity`"), "quantity"],
+        ],
+        through: { model: orderProduct, attributes: [] },
+      },
+    ],
   });
+
   res.status(200).json({ data: { orders: orderProdcuts } });
 };
 

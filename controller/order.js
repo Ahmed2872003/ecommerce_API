@@ -3,12 +3,15 @@ const Cart = require("../model/cart.js");
 const Order = require("../model/order.js");
 const Product = require("../model/product.js");
 const CartItem = require("../model/cart_items.js");
+const Address = require("../model/address.js");
 
 const createOrder = async (req) => {
   const {
     details: { subtotal, shipping_amount, total_amount },
     status,
   } = req.paymentDetails;
+
+  const address = await Address.create(req.addresssDetails);
 
   const cart = await Cart.findOne({
     where: { CustomerId: req.customer.id },
@@ -17,6 +20,7 @@ const createOrder = async (req) => {
 
   const order = await Order.create({
     CustomerId: req.customer.id,
+    AddressId: address.getDataValue("id"),
     subtotal,
     shipping_amount,
     total_amount,

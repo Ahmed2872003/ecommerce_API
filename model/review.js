@@ -48,10 +48,10 @@ const Review = sequelize.define(
   { indexes: [{ unique: true, fields: ["ProductId", "CustomerId"] }] }
 );
 
-Product.hasMany(Review, { onDelete: "cascade" });
+Product.hasMany(Review, { onDelete: "CASCADE" });
 Customer.hasMany(Review);
 
-Review.belongsTo(Product);
+Review.belongsTo(Product, { onDelete: "CASCADE" });
 Review.belongsTo(Customer);
 
 Review.sync();

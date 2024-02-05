@@ -31,14 +31,7 @@ const getAllProducts = async (req, res, next) => {
   const products = await Product.findAll({
     raw: true,
     attributes: {
-      exclude: [
-        "description",
-        "brand",
-        "quantity",
-        "CategoryId",
-        "SellerId",
-        "images",
-      ],
+      exclude: ["description", "brand", "CategoryId", "SellerId", "images"],
       include: [
         [col("Category.name"), "category"],
         [fn("COUNT", col("Reviews.id")), "reviewsCount"],
