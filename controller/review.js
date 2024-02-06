@@ -31,8 +31,6 @@ const createReview = async (req, res, next) => {
 
   await Review.create({ ...req.body, CustomerId: req.customer.id });
 
-  res.sendStatus(StatusCodes.CREATED);
-
   // Adding the ratting to the product
   const productRatingTable = await getReviewsTableFor(req.body.ProductId);
 
@@ -42,6 +40,8 @@ const createReview = async (req, res, next) => {
     { rating: +weightedRate },
     { where: { id: req.body.ProductId } }
   );
+
+  res.sendStatus(StatusCodes.CREATED);
 };
 
 const getReviews = async (req, res, next) => {
@@ -137,8 +137,6 @@ const deleteReview = async (req, res, next) => {
 
   await review.destroy();
 
-  res.sendStatus(StatusCodes.OK);
-
   // Adding the ratting to the product
   const productRatingTable = await getReviewsTableFor(
     review.getDataValue("ProductId")
@@ -150,6 +148,8 @@ const deleteReview = async (req, res, next) => {
     { rating: +weightedRate },
     { where: { id: review.getDataValue("ProductId") } }
   );
+
+  res.sendStatus(StatusCodes.OK);
 };
 
 module.exports = { createReview, getReviews, updateReview, deleteReview };

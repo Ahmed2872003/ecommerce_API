@@ -10,7 +10,7 @@ const sequelize = new Sequelize(
     logging: false,
     port: 3307,
     pool: {
-      max: 1,
+      max: 3,
     },
   }
 );
