@@ -11,6 +11,7 @@ const sequelize = new Sequelize(
     port: 3307,
     pool: {
       max: 3,
+      acquire: 1000000,
     },
   }
 );
