@@ -85,7 +85,7 @@ const createCheckoutSession = async (req, res, next) => {
     line_items,
     mode: "payment",
     shipping_address_collection: {
-      allowed_countries: ["EG", "US", "GB", "CA"],
+      allowed_countries: ["EG"],
     },
     metadata: {
       customerId: req.customer.id,
