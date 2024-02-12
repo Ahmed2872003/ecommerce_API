@@ -1,7 +1,7 @@
 // Modules
 const { StatusCodes } = require("http-status-codes");
+const { stripe } = require("../utility/stripe");
 
-const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const cld = require("../utility/cloudinary");
 
 // Errors

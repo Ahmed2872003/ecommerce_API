@@ -9,17 +9,25 @@ const CartItem = require("../../model/cart_items.js");
 const orderProducts = require("../../model/order_products");
 const { fn, Sequelize, col } = require("sequelize");
 
+// Modules
+const { stripe } = require("../stripe");
+
 async function handleStripeCheckoutCompleted(req, res, eventObjData) {
   const subtotal = eventObjData.amount_subtotal / 100;
   const shipping_amount = eventObjData.total_details.amount_shipping / 100;
   const total_amount = eventObjData.amount_total / 100;
 
+  const { delivery_estimate } = await stripe.shippingRates.retrieve(
+    eventObjData.shipping_cost.shipping_rate
+  );
   req.customer = { id: eventObjData.metadata.customerId };
+
   req.paymentDetails = {
-    details: { subtotal, shipping_amount, total_amount },
+    amount: { subtotal, shipping_amount, total_amount },
+    address: eventObjData.shipping_details.address,
+    delivery_estimate,
     status: true,
   };
-  req.addresssDetails = eventObjData.shipping_details.address;
 
   await createOrder(req);
   await createOrderProducts(req);

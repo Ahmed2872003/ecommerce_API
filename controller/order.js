@@ -7,11 +7,13 @@ const Address = require("../model/address.js");
 
 const createOrder = async (req) => {
   const {
-    details: { subtotal, shipping_amount, total_amount },
+    amount: { subtotal, shipping_amount, total_amount },
+    address,
     status,
+    delivery_estimate: { minimum: minDelivery, maximum: maxDelivery },
   } = req.paymentDetails;
 
-  const address = await Address.create(req.addresssDetails);
+  const addressRow = await Address.create(address);
 
   const cart = await Cart.findOne({
     where: { CustomerId: req.customer.id },
@@ -20,10 +22,11 @@ const createOrder = async (req) => {
 
   const order = await Order.create({
     CustomerId: req.customer.id,
-    AddressId: address.getDataValue("id"),
+    AddressId: addressRow.getDataValue("id"),
     subtotal,
     shipping_amount,
     total_amount,
+    delivery_estimate: [minDelivery.value, maxDelivery.value],
     status,
   });
 

@@ -39,6 +39,16 @@ const Order = sequelize.define(
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
+    delivery_estimate: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      set([start, end]) {
+        this.setDataValue("delivery_estimate", `${start}-${end}`);
+      },
+      get() {
+        return this.getDataValue("delivery_estimate").split("-");
+      },
+    },
   },
   { timestamps: true }
 );
