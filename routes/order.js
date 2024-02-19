@@ -1,12 +1,6 @@
 const router = require("express").Router();
 
-const { createOrder, confirmOrder } = require("../controller/order.js");
-const {
-  createOrderProducts,
-  getOrderProducts,
-} = require("../controller/orderProducts.js");
-
-const { deleteCart } = require("../controller/cart.js");
+const { getOrderProducts } = require("../controller/orderProducts.js");
 
 router.route("/").get(getOrderProducts);
 

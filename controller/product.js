@@ -71,7 +71,7 @@ const getAllProducts = async (req, res, next) => {
 const getProduct = async (req, res, next) => {
   const { id } = req.params;
 
-  const product = await Product.findOne({
+  const product = await Product.findAndCountAll({
     attributes: {
       exclude: ["CategoryId", "SellerId"],
       include: [
@@ -101,7 +101,7 @@ const getProduct = async (req, res, next) => {
     subQuery: false,
   });
 
-  if (!product) {
+  if (!product.count) {
     res
       .status(StatusCodes.NOT_FOUND)
       .json({ msg: `no product with ID: ${id}` });
@@ -110,7 +110,7 @@ const getProduct = async (req, res, next) => {
 
   res.status(200).json({
     data: {
-      product,
+      product: product.rows[0],
     },
   });
 };

@@ -85,7 +85,7 @@ const resetPass = async (req, res, next) => {
 
   res
     .status(StatusCodes.OK)
-    .json({ msg: "Password has been updated successfully" });
+    .json({ data: { msg: "Password has been updated successfully" } });
 };
 
 const confEmail = async (req, res, next) => {
