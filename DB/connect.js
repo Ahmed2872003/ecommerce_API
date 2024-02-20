@@ -10,8 +10,9 @@ const sequelize = new Sequelize(
     logging: false,
     port: 3307,
     pool: {
-      max: 1,
-      acquire: 1000000,
+      max: 3,
+      idle: 160000,
+      evict: 180000,
     },
   }
 );
