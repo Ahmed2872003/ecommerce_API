@@ -6,6 +6,7 @@ const {
   resetPass,
   confEmail,
   logout,
+  checkToken,
 } = require("../controller/auth.js");
 
 router.post("/signup", signup);
@@ -13,6 +14,8 @@ router.post("/signup", signup);
 router.post("/login", login);
 
 router.get("/logout", logout);
+
+router.get("/check-token", checkToken);
 
 router.post("/reset/password/:token", resetPass);
 
