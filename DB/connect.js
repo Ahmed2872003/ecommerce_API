@@ -16,10 +16,4 @@ const sequelize = new Sequelize({
   },
 });
 
-// const sequelize = new Sequelize("ecommerce", "root", "Falcon2025adam1", {
-//   host: "localhost",
-//   dialect: "mysql",
-//   logging: false,
-// });
-
 module.exports = sequelize;
