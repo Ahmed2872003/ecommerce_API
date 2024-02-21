@@ -39,17 +39,7 @@ const login = async (req, res, next) => {
 
       delete customer.password;
 
-      res
-        .cookie("token", token, {
-          httpOnly: true,
-          secure: true,
-          expires: new Date(Date.now() + 1 * 7 * 24 * 60 * 60 * 1000), // Last for 1 week
-        })
-        .cookie("user", JSON.stringify(customer), {
-          secure: true,
-          expires: new Date(Date.now() + 1 * 7 * 24 * 60 * 60 * 1000),
-        })
-        .sendStatus(StatusCodes.OK);
+      res.json({ data: { token, customer } });
     } else {
       res
         .status(StatusCodes.UNAUTHORIZED)
