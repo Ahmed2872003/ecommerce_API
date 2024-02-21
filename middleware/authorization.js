@@ -20,7 +20,7 @@ const authorization = async (req, res, next) => {
 
     req.customer = { id: payload.id, seller: payload.seller };
 
-    next();
+    if (next) next();
   } catch (err) {
     console.log(err.message);
     throw new CustomAPIError(

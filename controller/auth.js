@@ -9,6 +9,8 @@ const jwt = require("jsonwebtoken");
 const BadRequest = require("../errors/badRequest.js");
 const CustomApiError = require("../errors/custom.js");
 
+const authorization = require("../middleware/authorization.js");
+
 const signup = async (req, res, next) => {
   const customer = await Customer.create(req.body);
 
@@ -97,4 +99,10 @@ const confEmail = async (req, res, next) => {
   res.redirect(process.env.BASE_CLIENT_URL + "/auth/login");
 };
 
-module.exports = { signup, login, logout, resetPass, confEmail };
+const checkToken = async (req, res, next) => {
+  authorization(req, res, null);
+
+  res.sendStatus(StatusCodes.OK);
+};
+
+module.exports = { signup, login, logout, resetPass, confEmail, checkToken };
