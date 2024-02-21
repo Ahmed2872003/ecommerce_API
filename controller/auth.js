@@ -100,7 +100,7 @@ const confEmail = async (req, res, next) => {
 };
 
 const checkToken = async (req, res, next) => {
-  authorization(req, res, null);
+  await authorization(req, res, null);
 
   res.sendStatus(StatusCodes.OK);
 };

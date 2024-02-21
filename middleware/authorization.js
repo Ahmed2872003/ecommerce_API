@@ -7,7 +7,7 @@ const JWT = require("jsonwebtoken");
 const authorization = async (req, res, next) => {
   let token = req.headers.authorization;
 
-  if (!token && !token.startsWith("Bearer"))
+  if (!token || !token.startsWith("Bearer"))
     throw new CustomAPIError(
       "You aren't allowed to get that resource",
       StatusCodes.UNAUTHORIZED
@@ -22,7 +22,6 @@ const authorization = async (req, res, next) => {
 
     if (next) next();
   } catch (err) {
-    console.log(err.message);
     throw new CustomAPIError(
       "You aren't allowed to get that resource",
       StatusCodes.UNAUTHORIZED
