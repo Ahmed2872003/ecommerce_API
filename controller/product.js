@@ -65,7 +65,22 @@ const getAllProducts = async (req, res, next) => {
     offset,
   });
 
-  res.status(200).json({ data: { products, length: products.length } });
+  const MatchedProductsCount = await Product.count({
+    where: { [Op.and]: filters },
+    include: {
+      model: Category,
+      attributes: [],
+      required: true,
+    },
+  });
+
+  res.status(200).json({
+    data: {
+      products,
+      length: products.length,
+      MatchedProductsCount,
+    },
+  });
 };
 
 const getProduct = async (req, res, next) => {
@@ -128,8 +143,10 @@ const createProduct = async (req, res, next) => {
     throw new BadRequest(
       "Should provide 1 image for product cover and 5 for product images"
     );
-  let { image, images } = req.files;
-  [image] = image;
+  let {
+    image: [image],
+    images,
+  } = req.files;
 
   const product = await Product.create({
     ...req.body,
