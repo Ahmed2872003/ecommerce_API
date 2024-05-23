@@ -1,9 +1,9 @@
 const { Sequelize } = require("sequelize");
 
 const sequelize = new Sequelize({
-  host: "wec.h.filess.io",
-  database: "Ecommerce_machinery",
-  username: "Ecommerce_machinery",
+  host: "jhe.h.filess.io",
+  database: "ecommerce_doubtcrack",
+  username: "ecommerce_doubtcrack",
   password: process.env.DB_PASS,
   dialect: "mysql",
   logging: false,
