@@ -6,6 +6,8 @@ const Category = require("./category.js");
 
 const Customer = require("./customer.js");
 
+const Brand = require("./brand.js");
+
 const Product = sequelize.define(
   "Product",
   {
@@ -26,10 +28,6 @@ const Product = sequelize.define(
       validate: {
         len: [5, 500],
       },
-    },
-    brand: {
-      type: DataTypes.STRING,
-      allowNull: false,
     },
     price: {
       type: DataTypes.FLOAT,
@@ -68,6 +66,9 @@ const Product = sequelize.define(
 
 Category.hasMany(Product);
 Product.belongsTo(Category);
+
+Brand.hasMany(Product);
+Product.belongsTo(Brand);
 
 Customer.hasMany(Product, { as: "Seller", foreignKey: "SellerId" });
 Product.belongsTo(Customer, { as: "Seller", foreignKey: "SellerId" });

@@ -33,6 +33,8 @@ const userToSeqFilter = (filter) => {
 
     if (key === "category") key = "$Category.name$";
 
+    if (key === "brand") key = "$Brand.name$";
+
     if (op === "like=" || op === "nlike=") val = "%" + val + "%";
 
     res.push({ [key]: { [seqOperator[op]]: val } });
