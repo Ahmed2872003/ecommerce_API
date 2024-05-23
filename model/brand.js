@@ -2,10 +2,10 @@ const { DataTypes } = require("sequelize");
 
 const sequelize = require("../DB/connect.js");
 
-const categoriesData = require("../categories.json");
+const brandsData = require("../brands.json");
 
-const Category = sequelize.define(
-  "Category",
+const Brand = sequelize.define(
+  "Brand",
   {
     id: {
       type: DataTypes.INTEGER,
@@ -21,14 +21,16 @@ const Category = sequelize.define(
   { timestamps: false }
 );
 
-Category.sync();
+Brand.sync();
+
+// Fill the table with predefined brands
 
 (async () => {
-  const category = await Category.findOne();
+  const brand = await Brand.findOne();
 
-  if (category) return;
+  if (brand) return;
 
-  await Category.bulkCreate(categoriesData);
+  await Brand.bulkCreate(brandsData);
 })();
 
-module.exports = Category;
+module.exports = Brand;

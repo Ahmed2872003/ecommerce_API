@@ -1,6 +1,5 @@
 [
   {
-    "id": 1,
     "name": "iPhone 12",
     "description": "A powerful and feature-packed smartphone from Apple.",
     "price": 999,
@@ -14,12 +13,11 @@
       "https://example.com",
       "https://example.com"
     ],
-    "brand": "iPhone",
+    "BrandId": 37,
     "currency": "USD",
-    "SellerId": 33
+    "SellerId": 1
   },
   {
-    "id": 2,
     "name": "Samsung Galaxy S21",
     "description": "A high-end Android smartphone from Samsung.",
     "price": 899,
@@ -33,12 +31,11 @@
       "https://example.com",
       "https://example.com"
     ],
-    "brand": "Samsung",
+    "BrandId": 2,
     "currency": "USD",
-    "SellerId": 33
+    "SellerId": 1
   },
   {
-    "id": 3,
     "name": "Sony PlayStation 5",
     "description": "The latest and greatest gaming console from Sony.",
     "price": 499,
@@ -52,12 +49,11 @@
       "https://example.com",
       "https://example.com"
     ],
-    "brand": "Sony",
+    "BrandId": 3,
     "currency": "USD",
-    "SellerId": 33
+    "SellerId": 1
   },
   {
-    "id": 4,
     "name": "Microsoft Xbox Series X",
     "description": "The most powerful gaming console from Microsoft.",
     "price": 499,
@@ -71,12 +67,11 @@
       "https://example.com",
       "https://example.com"
     ],
-    "brand": "Microsoft",
+    "BrandId": 4,
     "currency": "USD",
-    "SellerId": 33
+    "SellerId": 1
   },
   {
-    "id": 5,
     "name": "Apple MacBook Pro",
     "description": "A high-performance laptop from Apple.",
     "price": 1499,
@@ -90,12 +85,11 @@
       "https://example.com",
       "https://example.com"
     ],
-    "brand": "Apple",
+    "BrandId": 1,
     "currency": "USD",
-    "SellerId": 33
+    "SellerId": 1
   },
   {
-    "id": 6,
     "name": "Dell XPS 13",
     "description": "A sleek and powerful laptop from Dell.",
     "price": 1199,
@@ -109,12 +103,11 @@
       "https://example.com",
       "https://example.com"
     ],
-    "brand": "Dell",
+    "BrandId": 5,
     "currency": "USD",
-    "SellerId": 33
+    "SellerId": 1
   },
   {
-    "id": 7,
     "name": "Samsung QLED TV",
     "description": "A high-end 4K TV from Samsung.",
     "price": 1499,
@@ -128,12 +121,11 @@
       "https://example.com",
       "https://example.com"
     ],
-    "brand": "Samsung",
+    "BrandId": 2,
     "currency": "USD",
-    "SellerId": 33
+    "SellerId": 1
   },
   {
-    "id": 8,
     "name": "LG OLED TV",
     "description": "A premium 4K TV with OLED display technology.",
     "price": 1999,
@@ -147,12 +139,11 @@
       "https://example.com",
       "https://example.com"
     ],
-    "brand": "LG",
+    "BrandId": 7,
     "currency": "USD",
-    "SellerId": 33
+    "SellerId": 1
   },
   {
-    "id": 9,
     "name": "Bose QuietComfort 35 II",
     "description": "A popular noise-cancelling headphone from Bose.",
     "price": 299,
@@ -166,12 +157,11 @@
       "https://example.com",
       "https://example.com"
     ],
-    "brand": "Bose",
+    "BrandId": 9,
     "currency": "USD",
-    "SellerId": 33
+    "SellerId": 1
   },
   {
-    "id": 10,
     "name": "Sony WH-1000XM4",
     "description": "A high-end noise-cancelling headphone from Sony.",
     "price": 349,
@@ -185,50 +175,11 @@
       "https://example.com",
       "https://example.com"
     ],
-    "brand": "Sony",
+    "BrandId": 3,
     "currency": "USD",
-    "SellerId": 33
+    "SellerId": 1
   },
   {
-    "id": 11,
-    "name": "Fitbit Charge 4",
-    "description": "A popular fitness tracker from Fitbit.",
-    "price": 149,
-    "quantity": 50,
-    "image": "https://example.com/charge4.jpg",
-    "CategoryId": 3,
-    "images": [
-      "https://example.com",
-      "https://example.com",
-      "https://example.com",
-      "https://example.com",
-      "https://example.com"
-    ],
-    "brand": "Fitbit",
-    "currency": "USD",
-    "SellerId": 33
-  },
-  {
-    "id": 12,
-    "name": "Garmin Forerunner 945",
-    "description": "A high-end GPS running watch from Garmin.",
-    "price": 599,
-    "quantity": 15,
-    "image": "https://example.com/forerunner945.jpg",
-    "CategoryId": 3,
-    "images": [
-      "https://example.com",
-      "https://example.com",
-      "https://example.com",
-      "https://example.com",
-      "https://example.com"
-    ],
-    "brand": "Garmin",
-    "currency": "USD",
-    "SellerId": 33
-  },
-  {
-    "id": 13,
     "name": "Canon EOS R5",
     "description": "A high-end mirrorless camera from Canon.",
     "price": 3899,
@@ -242,12 +193,11 @@
       "https://example.com",
       "https://example.com"
     ],
-    "brand": "Canon",
+    "BrandId": 10,
     "currency": "USD",
-    "SellerId": 33
+    "SellerId": 1
   },
   {
-    "id": 14,
     "name": "Sony Alpha A7R IV",
     "description": "A high-end mirrorless camera from Sony.",
     "price": 3499,
@@ -261,12 +211,11 @@
       "https://example.com",
       "https://example.com"
     ],
-    "brand": "Sony",
+    "BrandId": 3,
     "currency": "USD",
-    "SellerId": 33
+    "SellerId": 1
   },
   {
-    "id": 15,
     "name": "Nikon D850",
     "description": "A high-end DSLR camera from Nikon.",
     "price": 3299,
@@ -280,69 +229,11 @@
       "https://example.com",
       "https://example.com"
     ],
-    "brand": "Nikon",
+    "BrandId": 25,
     "currency": "USD",
-    "SellerId": 33
+    "SellerId": 1
   },
   {
-    "id": 16,
-    "name": "Google Nest Hub",
-    "description": "A smart display with Google Assistant built-in.",
-    "price": 129,
-    "quantity": 20,
-    "image": "https://example.com/nesthub.jpg",
-    "CategoryId": 1,
-    "images": [
-      "https://example.com",
-      "https://example.com",
-      "https://example.com",
-      "https://example.com",
-      "https://example.com"
-    ],
-    "brand": "Google",
-    "currency": "USD",
-    "SellerId": 33
-  },
-  {
-    "id": 17,
-    "name": "Amazon Echo Show 10",
-    "description": "A smart display with Alexa built-in and a rotating screen.",
-    "price": 249,
-    "quantity": 15,
-    "image": "https://example.com/echoshow10.jpg",
-    "CategoryId": 1,
-    "images": [
-      "https://example.com",
-      "https://example.com",
-      "https://example.com",
-      "https://example.com",
-      "https://example.com"
-    ],
-    "brand": "Amazon",
-    "currency": "USD",
-    "SellerId": 33
-  },
-  {
-    "id": 18,
-    "name": "iRobot Roomba i7+",
-    "description": "A high-end robot vacuum cleaner from iRobot.",
-    "price": 999,
-    "quantity": 5,
-    "image": "https://example.com/roombai7+.jpg",
-    "CategoryId": 5,
-    "images": [
-      "https://example.com",
-      "https://example.com",
-      "https://example.com",
-      "https://example.com",
-      "https://example.com"
-    ],
-    "brand": "iRobot",
-    "currency": "USD",
-    "SellerId": 33
-  },
-  {
-    "id": 19,
     "name": "Dyson Cyclone V10",
     "description": "A powerful cordless vacuum cleaner from Dyson.",
     "price": 499,
@@ -356,27 +247,8 @@
       "https://example.com",
       "https://example.com"
     ],
-    "brand": "Dyson",
+    "BrandId": 31,
     "currency": "USD",
-    "SellerId": 33
-  },
-  {
-    "id": 20,
-    "name": "Instant Pot Duo",
-    "description": "A popular multi-cooker from Instant Pot.",
-    "price": 99,
-    "quantity": 30,
-    "image": "https://example.com/instantpotduo.jpg",
-    "CategoryId": 5,
-    "images": [
-      "https://example.com",
-      "https://example.com",
-      "https://example.com",
-      "https://example.com",
-      "https://example.com"
-    ],
-    "brand": "Instant",
-    "currency": "USD",
-    "SellerId": 33
+    "SellerId": 1
   }
 ]

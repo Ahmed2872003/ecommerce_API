@@ -7,6 +7,7 @@ const CartItem = require("../model/cart_items.js");
 const Cart = require("../model/cart.js");
 const Review = require("../model/review.js");
 const Customer = require("../model/customer.js");
+const Brand = require("../model/brand.js");
 
 const { StatusCodes } = require("http-status-codes");
 
@@ -31,9 +32,17 @@ const getAllProducts = async (req, res, next) => {
   const products = await Product.findAll({
     raw: true,
     attributes: {
-      exclude: ["description", "brand", "CategoryId", "SellerId", "images"],
+      exclude: [
+        "description",
+        "brand",
+        "CategoryId",
+        "SellerId",
+        "images",
+        "BrandId",
+      ],
       include: [
         [col("Category.name"), "category"],
+        [col("Brand.name"), "brand"],
         [fn("COUNT", col("Reviews.id")), "reviewsCount"],
       ],
     },
@@ -44,6 +53,11 @@ const getAllProducts = async (req, res, next) => {
       },
       {
         model: Category,
+        attributes: [],
+        required: true,
+      },
+      {
+        model: Brand,
         attributes: [],
         required: true,
       },
@@ -67,11 +81,18 @@ const getAllProducts = async (req, res, next) => {
 
   const MatchedProductsCount = await Product.count({
     where: { [Op.and]: filters },
-    include: {
-      model: Category,
-      attributes: [],
-      required: true,
-    },
+    include: [
+      {
+        model: Category,
+        attributes: [],
+        required: true,
+      },
+      {
+        model: Brand,
+        attributes: [],
+        required: true,
+      },
+    ],
   });
 
   res.status(200).json({
@@ -88,9 +109,10 @@ const getProduct = async (req, res, next) => {
 
   const product = await Product.findAndCountAll({
     attributes: {
-      exclude: ["CategoryId", "SellerId"],
+      exclude: ["CategoryId", "SellerId", "BrandId"],
       include: [
         [col("Category.name"), "category"],
+        [col("Brand.name"), "brand"],
         [fn("COUNT", col("Reviews.id")), "reviewsCount"],
       ],
     },
@@ -111,6 +133,11 @@ const getProduct = async (req, res, next) => {
         model: Customer,
         as: "Seller",
         attributes: ["id", "first_name", "email"],
+      },
+      {
+        model: Brand,
+        attributes: [],
+        required: true,
       },
     ],
     subQuery: false,
