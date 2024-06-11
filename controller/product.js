@@ -30,16 +30,8 @@ const getAllProducts = async (req, res, next) => {
   offset = +offset || (+page - 1) * +limit;
 
   const products = await Product.findAll({
-    raw: true,
     attributes: {
-      exclude: [
-        "description",
-        "brand",
-        "CategoryId",
-        "SellerId",
-        "images",
-        "BrandId",
-      ],
+      exclude: ["brand", "SellerId"],
       include: [
         [col("Category.name"), "category"],
         [col("Brand.name"), "brand"],
@@ -205,24 +197,25 @@ const updateProduct = async (req, res, next) => {
 
   if (req.files["image"]) {
     const [image] = req.files["image"];
-    await cloudinary.upload_stream(
-      image,
-      "products",
-      product.getDataValue("image")
-    );
-  }
+
+    await cloudinary.upload_destroy(product.getDataValue("image"));
+
+    const imgPubId = await cloudinary.upload_stream(image, "products");
+
+    req.body.image = imgPubId;
+  } else delete req.body.image;
   if (req.files["images"]) {
     const images = req.files["images"];
 
     if (images.length !== 5)
       throw new BadRequest("Must provide 5 for product images");
 
-    await cloudinary.upload_bulk_stream(
-      images,
-      "products",
-      product.get("images")
-    );
-  }
+    await cloudinary.upload_bulk_destroy(product.get("images"));
+
+    const imgsPubIds = await cloudinary.upload_bulk_stream(images, "products");
+
+    req.body.images = imgsPubIds;
+  } else delete req.body.images;
 
   const { quantity: oldQuantity, price: Oldprice } = product.dataValues;
 
