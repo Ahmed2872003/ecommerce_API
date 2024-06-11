@@ -26,7 +26,7 @@ const Product = sequelize.define(
       type: DataTypes.STRING(500),
       allowNull: false,
       validate: {
-        len: [5, 500],
+        len: [100, 500],
       },
     },
     price: {

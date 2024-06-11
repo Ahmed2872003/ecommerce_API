@@ -13,17 +13,20 @@ const BrandCategory = sequelize.define(
   { timestamps: false }
 );
 
-Brand.belongsToMany(Category, { through: BrandCategory });
-Category.belongsToMany(Brand, { through: BrandCategory });
-
-BrandCategory.sync();
-
 (async () => {
+  await BrandCategory.sync();
+
   const brandCategory = await BrandCategory.findOne();
 
   if (brandCategory) return;
 
   await BrandCategory.bulkCreate(brandCategoryData);
 })();
+
+Brand.belongsToMany(Category, { through: BrandCategory });
+Category.belongsToMany(Brand, { through: BrandCategory });
+
+BrandCategory.belongsTo(Category);
+BrandCategory.belongsTo(Brand);
 
 module.exports = BrandCategory;

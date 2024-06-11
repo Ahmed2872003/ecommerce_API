@@ -286,10 +286,46 @@ const deleteProduct = async (req, res, next) => {
   res.sendStatus(StatusCodes.OK);
 };
 
+const getRelatedBrands = async (req, res, next) => {
+  const { productName = "", productCategory = "" } = req.body;
+
+  let relatedBrands = await Product.findAll({
+    raw: true,
+    attributes: [[col("Brand.name"), "brand"]],
+
+    where: {
+      [Op.and]: [
+        { name: { [Op.like]: `%${productName}%` } },
+        { ["$Category.name$"]: { [Op.like]: `%${productCategory}%` } },
+      ],
+    },
+
+    include: [
+      {
+        model: Category,
+        attributes: [],
+        required: true,
+      },
+      {
+        model: Brand,
+        attributes: [],
+        required: true,
+      },
+    ],
+  });
+
+  relatedBrands = relatedBrands.map((brand) => brand.brand);
+
+  relatedBrands = [...new Set(relatedBrands)];
+
+  res.json({ relatedBrands });
+};
+
 module.exports = {
   getAllProducts,
   getProduct,
   createProduct,
   updateProduct,
   deleteProduct,
+  getRelatedBrands,
 };

@@ -21,9 +21,8 @@ const Category = sequelize.define(
   { timestamps: false }
 );
 
-Category.sync();
-
 (async () => {
+  await Category.sync();
   const category = await Category.findOne();
 
   if (category) return;

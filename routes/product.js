@@ -6,6 +6,7 @@ const {
   createProduct,
   updateProduct,
   deleteProduct,
+  getRelatedBrands,
 } = require("../controller/product.js");
 
 const upload = require("../middleware/multer.js");
@@ -15,6 +16,9 @@ const auth = require("../middleware/authorization.js");
 const isSeller = require("../middleware/isSeller.js");
 
 router.get("/", getAllProducts);
+
+router.get("/brands", getRelatedBrands);
+
 router.get("/:id", getProduct);
 
 router.use("/", auth, isSeller);
