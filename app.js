@@ -35,6 +35,7 @@ const cartRouter = require("./routes/cart.js");
 const orderRouter = require("./routes/order.js");
 const emailRouter = require("./routes/email.js");
 const stripeRouter = require("./routes/stripe.js");
+const categoryRouter = require("./routes/category.js");
 // authorization
 const auth = require("./middleware/authorization.js");
 
@@ -68,6 +69,7 @@ app.use("/email", multer().none(), emailRouter);
 app.use("/customer", auth, customerRouter);
 app.use("/cart", auth, cartRouter);
 app.use("/order", auth, orderRouter);
+app.use("/category", categoryRouter);
 app.use("/stripe", stripeRouter);
 
 app.use(notFound);

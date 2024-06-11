@@ -21,11 +21,10 @@ const Brand = sequelize.define(
   { timestamps: false }
 );
 
-Brand.sync();
-
 // Fill the table with predefined brands
 
 (async () => {
+  await Brand.sync();
   const brand = await Brand.findOne();
 
   if (brand) return;

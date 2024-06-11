@@ -38,6 +38,6 @@ const Address = sequelize.define("Address", {
   },
 });
 
-Address.sync({ alter: true });
+Address.sync();
 
 module.exports = Address;
