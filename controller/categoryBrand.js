@@ -14,7 +14,7 @@ const getCategoryBrands = async (req, res) => {
       },
     ],
     where: {
-      id: req.body.categoryId,
+      id: req.query.categoryId,
     },
   });
 
