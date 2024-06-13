@@ -96,7 +96,7 @@ const createCheckoutSession = async (req, res, next) => {
   res.status(StatusCodes.OK).json({ data: { url: session.url } });
 };
 
-const listenToStripeEvents = async (req, res) => {
+const listenToStripeEvents = async (req, res, next) => {
   const sig = req.headers["stripe-signature"];
 
   let event;

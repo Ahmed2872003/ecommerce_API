@@ -203,7 +203,8 @@ const updateProduct = async (req, res, next) => {
     const imgPubId = await cloudinary.upload_stream(image, "products");
 
     req.body.image = imgPubId;
-  } else delete req.body.image;
+  }
+
   if (req.files["images"]) {
     const images = req.files["images"];
 
@@ -215,7 +216,7 @@ const updateProduct = async (req, res, next) => {
     const imgsPubIds = await cloudinary.upload_bulk_stream(images, "products");
 
     req.body.images = imgsPubIds;
-  } else delete req.body.images;
+  }
 
   const { quantity: oldQuantity, price: Oldprice } = product.dataValues;
 
