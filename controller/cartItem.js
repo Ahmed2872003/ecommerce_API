@@ -18,10 +18,13 @@ const addCartItem = async (req, res, next) => {
   const { productId: ProductId, quantity } = req.body;
 
   const product = await Product.findByPk(ProductId, {
-    attributes: ["price", "quantity"],
+    attributes: ["price", "quantity", "SellerId"],
   });
 
   if (!product) throw new NotFoundError("product", ProductId);
+
+  if (product.getDataValue("SellerId") === req.customer.id)
+    throw new BadRequestError("Can not add product to its Owner cart");
 
   const { quantity: Productquantity } = product.dataValues;
 
