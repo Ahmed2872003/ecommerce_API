@@ -28,7 +28,7 @@ const createOrderProducts = async (req) => {
   await orderProduct.bulkCreate(cartItems);
 };
 
-const getOrderProducts = async (req, res, next) => {
+const getCustomerOrderProducts = async (req, res, next) => {
   const orderProdcuts = await Order.findAll({
     attributes: { exclude: ["CustomerId", "AddressId"] },
     where: { CustomerId: req.customer.id },
@@ -58,4 +58,10 @@ const getOrderProducts = async (req, res, next) => {
   res.status(200).json({ data: { orders: orderProdcuts } });
 };
 
-module.exports = { createOrderProducts, getOrderProducts };
+const getSellerOrderProoducts = async (req, res, next) => {};
+
+module.exports = {
+  createOrderProducts,
+  getCustomerOrderProducts,
+  getSellerOrderProoducts,
+};
