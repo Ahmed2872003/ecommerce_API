@@ -7,6 +7,7 @@ const Cart = require("../model/cart.js");
 const Address = require("../model/address.js");
 
 const { literal, col } = require("sequelize");
+const Customer = require("../model/customer.js");
 
 const createOrderProducts = async (req) => {
   const cartItems = await CartItems.findAll({
@@ -51,17 +52,53 @@ const getCustomerOrderProducts = async (req, res, next) => {
           [literal("`Products->orderProduct`.`quantity`"), "quantity"],
         ],
         through: { model: orderProduct, attributes: [] },
+        required: false,
       },
     ],
+    order: [["createdAt", "DESC"]],
   });
 
   res.status(200).json({ data: { orders: orderProdcuts } });
 };
 
-const getSellerOrderProoducts = async (req, res, next) => {};
+const getIncomingOrderProducts = async (req, res, next) => {
+  const incomingorderProdcuts = await Order.findAll({
+    attributes: { exclude: ["CustomerId", "AddressId"] },
+    include: [
+      {
+        model: Address,
+        attributes: {
+          exclude: ["id", "createdAt", "updatedAt"],
+        },
+      },
+
+      {
+        model: Product,
+        where: { SellerId: req.customer.id },
+        attributes: [
+          "id",
+          "name",
+          "price",
+          "image",
+          "currency",
+          [literal("`Products->orderProduct`.`quantity`"), "quantity"],
+        ],
+        through: { model: orderProduct, attributes: [] },
+      },
+      {
+        model: Customer,
+        attributes: ["id"],
+        required: true,
+      },
+    ],
+    order: [["createdAt", "DESC"]],
+  });
+
+  res.status(200).json({ data: { orders: incomingorderProdcuts } });
+};
 
 module.exports = {
   createOrderProducts,
   getCustomerOrderProducts,
-  getSellerOrderProoducts,
+  getIncomingOrderProducts,
 };
