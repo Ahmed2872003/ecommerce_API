@@ -35,7 +35,10 @@ const updateCustomer = async (req, res, next) => {
 };
 
 const getCustomer = async (req, res, next) => {
-  const { id: customerID } = req.customer;
+  let { customerId: customerID } = req.query;
+
+  if (!customerID) customerID = req.customer.id;
+
   let customer = await Customer.findByPk(customerID, {
     attributes: {
       exclude: ["password"],
