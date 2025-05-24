@@ -38,6 +38,7 @@ const stripeRouter = require("./routes/stripe.js");
 const categoryRouter = require("./routes/category.js");
 // authorization
 const auth = require("./middleware/authorization.js");
+const { log } = require("console");
 
 app.use(
   rateLimiter({
