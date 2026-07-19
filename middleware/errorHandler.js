@@ -1,10 +1,7 @@
 const customAPIError = require("../errors/custom.js");
 const { StatusCodes } = require("http-status-codes");
 const errorHandler = (err, req, res, next) => {
-  const customError = {
-    statusCode: err.statusCode || 500,
-    msg: err.message,
-  };
+  const customError = { statusCode: err.statusCode || 500, msg: err.message };
   // handle sequelize validations errors
   const { errors } = err;
 
@@ -36,9 +33,9 @@ const errorHandler = (err, req, res, next) => {
     }
   }
 
-  res
-    .status(customError.statusCode)
-    .json({ msg: customError.msg.split(",")[0] });
+  console.error(err);
+
+  res.status(customError.statusCode).json({ msg: customError.msg.split(",")[0] });
   // res.status(customError.statusCode).json(err);
 };
 

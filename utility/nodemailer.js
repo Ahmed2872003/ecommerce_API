@@ -5,7 +5,12 @@ class mail {
   constructor(user, pass) {
     this.user = user;
     this.pass = pass;
-    this.transporter = nodemailer.createTransport({ service: "gmail", auth: { user: this.user, pass: this.pass } });
+    this.transporter = nodemailer.createTransport({
+      host: process.env.SMTP_SERVER,
+      port: Number(process.env.SMTP_PORT),
+      secure: false,
+      auth: { user, pass },
+    });
   }
 
   sendAuthEmail({ redirectLink, authType, target }) {

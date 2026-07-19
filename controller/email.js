@@ -11,7 +11,7 @@ const Mail = require("../utility/nodemailer.js");
 const Customer = require("../model/customer.js");
 
 // Utils
-const mail = new Mail(process.env.BASE_EMAIL, process.env.BASE_EMAIL_PASS);
+const mail = new Mail(process.env.SMTP_USER, process.env.SMTP_PASS);
 const { StatusCodes } = require("http-status-codes");
 
 const sendEmailConf = async (req, res, next) => {
