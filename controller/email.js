@@ -21,25 +21,16 @@ const sendEmailConf = async (req, res, next) => {
 
   const customer = await Customer.findOne({ where: { email } });
 
-  if (!customer)
-    throw new CustomError("This email doesn't exist.", StatusCodes.NOT_FOUND);
+  if (!customer) throw new CustomError("This email doesn't exist.", StatusCodes.NOT_FOUND);
 
   if (customer.getDataValue("confirmed")) {
-    res
-      .status(StatusCodes.CONFLICT)
-      .json({ msg: "This email has been already confirmed." });
+    res.status(StatusCodes.CONFLICT).json({ msg: "This email has been already confirmed." });
     return;
   }
-  const token = jwt.sign({ email }, process.env.JWT_SECRET_KEY_EMAILCONF, {
-    expiresIn: "10m",
-  });
+  const token = jwt.sign({ email }, process.env.JWT_SECRET_KEY_EMAILCONF, { expiresIn: "10m" });
   const redirectLink = `${process.env.BASE_SERVER_URL}/auth/confirm/email/${token}`;
 
-  await mail.sendAuthEmail({
-    redirectLink,
-    authType: "emailConfirmation",
-    target: email,
-  });
+  await mail.sendAuthEmail({ redirectLink, authType: "emailConfirmation", target: email });
 
   res.status(StatusCodes.OK).json({ msg: "Email sent successfully." });
 };
@@ -51,20 +42,13 @@ const sendPassReset = async (req, res, next) => {
 
   const customer = await Customer.findOne({ where: { email } });
 
-  if (!customer)
-    throw new CustomError("This email doesn't exist.", StatusCodes.NOT_FOUND);
+  if (!customer) throw new CustomError("This email doesn't exist.", StatusCodes.NOT_FOUND);
 
-  const token = jwt.sign({ email }, process.env.JWT_SECRET_KEY_PASSRESET, {
-    expiresIn: "10m",
-  });
+  const token = jwt.sign({ email }, process.env.JWT_SECRET_KEY_PASSRESET, { expiresIn: "10m" });
 
   const redirectLink = `${process.env.BASE_CLIENT_URL}/auth/reset/password/${token}`;
 
-  await mail.sendAuthEmail({
-    redirectLink,
-    authType: "passReset",
-    target: email,
-  });
+  await mail.sendAuthEmail({ redirectLink, authType: "passReset", target: email });
 
   res.status(StatusCodes.OK).json({ msg: "Email sent successfully." });
 };

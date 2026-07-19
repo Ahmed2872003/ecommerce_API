@@ -5,13 +5,7 @@ class mail {
   constructor(user, pass) {
     this.user = user;
     this.pass = pass;
-    this.transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: this.user,
-        pass: this.pass,
-      },
-    });
+    this.transporter = nodemailer.createTransport({ service: "gmail", auth: { user: this.user, pass: this.pass } });
   }
 
   sendAuthEmail({ redirectLink, authType, target }) {
@@ -28,12 +22,7 @@ class mail {
       subject = "Reset password";
     }
 
-    const mailOptions = {
-      from: this.user,
-      to: target,
-      subject,
-      html: body,
-    };
+    const mailOptions = { from: this.user, to: target, subject, html: body };
 
     return new Promise((res, rej) => {
       this.transporter.sendMail(mailOptions, function (error, info) {
