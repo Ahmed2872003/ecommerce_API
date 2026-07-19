@@ -7,13 +7,8 @@ const sequelize = new Sequelize({
   password: process.env.DB_PASS,
   dialect: "mysql",
   logging: false,
-  port: 3307,
-  pool: {
-    max: 3,
-    idle: 160000,
-    evict: 180000,
-    acquire: 160000,
-  },
+  port: process.env.DB_PORT,
+  pool: { max: 3, idle: 160000, evict: 180000, acquire: 160000 },
 });
 
 module.exports = sequelize;

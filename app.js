@@ -44,7 +44,7 @@ app.use(
   rateLimiter({
     windowMs: 15 * 60 * 1000, // 15 minutes
     max: 1000, // limit each IP to 1000 requests per windowMs
-  })
+  }),
 );
 // middlewares
 app.use(
@@ -55,7 +55,7 @@ app.use(
         req.rawBody = buf.toString();
       }
     },
-  })
+  }),
 );
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
