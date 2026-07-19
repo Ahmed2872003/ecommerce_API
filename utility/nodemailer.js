@@ -5,6 +5,7 @@ class mail {
   constructor(user, pass) {
     this.user = user;
     this.pass = pass;
+    this.from = process.env.EMAIL_OPT_FROM;
     this.transporter = nodemailer.createTransport({
       host: process.env.SMTP_SERVER,
       port: Number(process.env.SMTP_PORT),
@@ -27,7 +28,7 @@ class mail {
       subject = "Reset password";
     }
 
-    const mailOptions = { from: this.user, to: target, subject, html: body };
+    const mailOptions = { from: this.from, to: target, subject, html: body };
 
     return new Promise((res, rej) => {
       this.transporter.sendMail(mailOptions, function (error, info) {
