@@ -11,57 +11,27 @@ const Brand = require("./brand.js");
 const Product = sequelize.define(
   "Product",
   {
-    id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      autoIncrement: true,
-      primaryKey: true,
-    },
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
+    id: { type: DataTypes.INTEGER, allowNull: false, autoIncrement: true, primaryKey: true },
+    name: { type: DataTypes.STRING, allowNull: false },
 
-    description: {
-      type: DataTypes.STRING(500),
-      allowNull: false,
-      validate: {
-        len: [100, 500],
-      },
-    },
-    price: {
-      type: DataTypes.FLOAT,
-      allowNull: false,
-    },
-    quantity: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    rating: {
-      type: DataTypes.FLOAT,
-      defaultValue: 0.0,
-    },
-    image: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
+    description: { type: DataTypes.STRING(500), allowNull: false, validate: { len: [25, 500] } },
+    price: { type: DataTypes.FLOAT, allowNull: false },
+    quantity: { type: DataTypes.INTEGER, allowNull: false },
+    rating: { type: DataTypes.FLOAT, defaultValue: 0.0 },
+    image: { type: DataTypes.STRING, allowNull: false },
     images: {
       type: DataTypes.STRING,
       allowNull: false,
       get() {
-        if (this.getDataValue("images"))
-          return this.getDataValue("images").split(";");
+        if (this.getDataValue("images")) return this.getDataValue("images").split(";");
       },
       set(val) {
         this.setDataValue("images", val.join(";"));
       },
     },
-    currency: {
-      type: DataTypes.STRING,
-      defaultValue: "USA",
-    },
+    currency: { type: DataTypes.STRING, defaultValue: "USA" },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 Category.hasMany(Product);

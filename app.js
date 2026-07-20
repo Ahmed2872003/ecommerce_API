@@ -90,7 +90,6 @@ server.on("close", () => sequelize.close());
     await sequelize.authenticate();
 
     app.listen(port, () => console.log(`API is listening on port ${port}`));
-    // require("./addProducts.js");
   } catch (err) {
     console.log(err.message);
     server.close();
